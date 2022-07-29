@@ -1,0 +1,24 @@
+.tab-content {
+    height: calc(100vh - 192px);
+
+    .tab-content-header {
+        height: 48px;
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+
+        .tab-content-header-search {
+            margin-left: auto;
+        }
+    }
+
+    .tab-content-main {
+        height: calc(100% - 48px - 48px);
+    }
+
+    .tab-content-footer {
+        height: 48px;
+        display: flex;
+        align-items: center;
+    }
+}
