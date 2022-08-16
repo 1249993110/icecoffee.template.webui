@@ -4,9 +4,6 @@
             <el-form-item label="区域" prop="area">
                 <el-input v-model="formModel.area"></el-input>
             </el-form-item>
-            <el-form-item label="HTTP方法" prop="httpMethods">
-                <el-input v-model="formModel.httpMethods"></el-input>
-            </el-form-item>
             <el-form-item label="说明" prop="description">
                 <el-input v-model="formModel.description"></el-input>
             </el-form-item>
@@ -33,7 +30,6 @@ const formRef = ref();
 const formModel = ref({
     id: '',
     area: '',
-    httpMethods: '*',
     description: '',
 });
 

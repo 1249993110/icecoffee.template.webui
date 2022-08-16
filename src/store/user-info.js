@@ -11,7 +11,6 @@ export const useUserInfoStore = defineStore('user-info', {
             email: '',
             phoneNumber: '',
             areas: [],
-            httpMethods: [],
         };
     },
     getters: {
