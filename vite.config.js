@@ -55,6 +55,10 @@ export default defineConfig(({ mode }) => {
                     target: 'http://localhost:5199',
                     changeOrigin: true,
                 },
+                '/swagger': {
+                    target: 'http://localhost:5199',
+                    changeOrigin: true,
+                }
             },
         },
     };

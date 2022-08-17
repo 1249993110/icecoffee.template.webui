@@ -32,7 +32,7 @@ const items = computed(() => menus.tree);
 const handleSelectMenu = (path) => {
     const menu = menus.getMenuByPath(path);
     if (menu.isExternalLink) {
-        window.open(menu.url);
+        window.open(menu.path);
     } else {
         keepAlive.addPage(path);
     }
