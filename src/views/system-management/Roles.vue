@@ -29,11 +29,6 @@
                 <el-table-column type="index" label="序号" width="55" />
                 <el-table-column prop="name" label="角色名称" sortable />
                 <el-table-column prop="description" label="说明" sortable />
-                <el-table-column prop="isEnabled" label="是否启用" width="112">
-                    <template #default="scope">
-                        <el-tag :type="scope.row.isEnabled ? 'success' : 'danger'">{{ scope.row.isEnabled ? '是' : '否' }}</el-tag>
-                    </template>
-                </el-table-column>
                 <el-table-column label="操作" width="450">
                     <template #default="scope">
                         <el-button size="small" type="primary" @click="handleEdit(scope.row)">编辑</el-button>

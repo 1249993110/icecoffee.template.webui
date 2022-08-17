@@ -7,9 +7,6 @@
             <el-form-item label="说明" prop="description">
                 <el-input v-model="formModel.description"></el-input>
             </el-form-item>
-            <el-form-item label="是否启用" prop="isEnabled">
-                <el-switch v-model="formModel.isEnabled" />
-            </el-form-item>
         </el-form>
         <template #footer>
             <span class="dialog-footer">
@@ -33,8 +30,7 @@ const formRef = ref();
 const formModel = ref({
     id: '',
     name: '',
-    description: '',
-    isEnabled: true,
+    description: ''
 });
 
 const rules = reactive({
