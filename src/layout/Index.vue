@@ -3,7 +3,7 @@
         <el-header height="48px" style="box-shadow: 0 1px 4px rgb(0 21 41 / 8%)">
             <Header></Header>
         </el-header>
-        <el-container style="height: calc(100% - 48px)">
+        <el-container style="height: calc(100% - 48px);padding-top: 1px">
             <el-aside width="210px">
                 <Sidebar></Sidebar>
             </el-aside>
@@ -13,9 +13,9 @@
                     <div class="router-view-container">
                         <router-view v-slot="{ Component }">
                             <transition mode="out-in">
-                                <keep-alive :include="includes">
+                                <keep-alive-store :include="includes">
                                     <component :is="Component" />
-                                </keep-alive>
+                                </keep-alive-store>
                             </transition>
                         </router-view>
                     </div>
@@ -38,15 +38,15 @@ import { useKeepAliveStore } from '../store/keep-alive';
 import { useMenusStore } from '../store/menus';
 import { useUserInfoStore } from '../store/user-info';
 
-const keepAlive = useKeepAliveStore();
-const includes = computed(() => keepAlive.includes);
+const keepAliveStore = useKeepAliveStore();
+const includes = computed(() => keepAliveStore.includes);
 
-const menus = useMenusStore();
-const userInfo = useUserInfoStore();
+const menusStore = useMenusStore();
+const userInfoStore = useUserInfoStore();
 
 onBeforeMount(async () => {
-    await userInfo.init();
-    await menus.init();
+    await userInfoStore.init();
+    await menusStore.init();
 });
 </script>
 

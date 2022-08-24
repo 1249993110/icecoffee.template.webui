@@ -15,10 +15,10 @@ import { useKeepAliveStore } from '../store/keep-alive';
 import { useRoute, useRouter } from 'vue-router';
 import { useMenusStore } from '../store/menus';
 
-const keepAlive = useKeepAliveStore();
+const keepAliveStore = useKeepAliveStore();
 const route = useRoute();
 const router = useRouter();
-const menus = useMenusStore();
+const menusStore = useMenusStore();
 
 const selectedTab = computed({
     get: () => route.path,
@@ -27,8 +27,8 @@ const selectedTab = computed({
 
 const tabs = computed(() => {
     const result = [];
-    keepAlive.paths.forEach((path) => {
-        const menu = menus.getMenuByPath(path);
+    keepAliveStore.paths.forEach((path) => {
+        const menu = menusStore.getMenuByPath(path);
         if(menu){
             result.push(menu);
         }
@@ -38,7 +38,7 @@ const tabs = computed(() => {
 });
 
 const handleRemoveTab = (path) => {
-    keepAlive.removePage(path);
+    keepAliveStore.removePage(path);
 };
 </script>
 

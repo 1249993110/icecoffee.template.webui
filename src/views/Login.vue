@@ -35,7 +35,7 @@ import { User, Lock } from '@element-plus/icons-vue';
 import { signInWithCookie } from '../api/account';
 
 const title = import.meta.env.VITE_APP_TITEL;
-const keepAlive = useKeepAliveStore();
+const keepAliveStore = useKeepAliveStore();
 
 const model = reactive({
     loginName: '',
@@ -55,7 +55,7 @@ const handleLogin = async () => {
             passwordHash: btoa(model.password),
         });
         message.success('登录成功');
-        keepAlive.addPage('/home');
+        keepAliveStore.addPage('/home');
     } catch {}
 };
 </script>

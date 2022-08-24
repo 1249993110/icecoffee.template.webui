@@ -9,7 +9,7 @@
         <div class="right">
             <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
-                    {{ userInfo.displayName }}
+                    {{ userInfoStore.displayName }}
                     <Icon name="arrow-down"></Icon>
                 </span>
                 <template #dropdown>
@@ -33,9 +33,9 @@ import Icon from '../components/Icon.vue';
 
 const title = import.meta.env.VITE_APP_TITEL;
 
-const userInfo = useUserInfoStore();
-const keepAlive = useKeepAliveStore();
-const menus = useMenusStore();
+const userInfoStore = useUserInfoStore();
+const keepAliveStore = useKeepAliveStore();
+const menusStore = useMenusStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -65,14 +65,14 @@ const getBreadcrumbs = (tree, path) => {
 };
 
 const breadcrumbs = computed(() => {
-    return getBreadcrumbs(menus.tree, route.path);
+    return getBreadcrumbs(menusStore.tree, route.path);
 });
 
 const handleCommand = async (command) => {
     switch (command) {
         case 'logout':
             await myconfirm('您确定要退出登录吗?');
-            keepAlive.activePages = [];
+            keepAliveStore.activePages = [];
             router.push('/login');
             break;
     }

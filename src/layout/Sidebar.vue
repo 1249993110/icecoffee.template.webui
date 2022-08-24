@@ -22,19 +22,19 @@ import { useMenusStore } from '../store/menus';
 import { useKeepAliveStore } from '../store/keep-alive';
 
 const route = useRoute();
-const menus = useMenusStore();
-const keepAlive = useKeepAliveStore();
+const menusStore = useMenusStore();
+const keepAliveStore = useKeepAliveStore();
 
 const activeMenu = computed(() => route.path);
 
-const items = computed(() => menus.tree);
+const items = computed(() => menusStore.tree);
 
 const handleSelectMenu = (path) => {
-    const menu = menus.getMenuByPath(path);
+    const menu = menusStore.getMenuByPath(path);
     if (menu.isExternalLink) {
         window.open(menu.path);
     } else {
-        keepAlive.addPage(path);
+        keepAliveStore.addPage(path);
     }
 };
 </script>

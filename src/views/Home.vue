@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="home">
         <h1>Hello World</h1>
     </div>
 </template>
@@ -20,5 +20,8 @@ import { ref, reactive } from 'vue'
 </script>
 
 <style scoped lang="scss">
-
+.home{
+    height: 100%;
+    display: flex;
+}
 </style>

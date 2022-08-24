@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { getUserMenus } from '../api/account';
 
-export const useMenusStore = defineStore('menus', {
+export default useMenusStore = defineStore('menus', {
     state: () => {
         return {
             tree: [],
@@ -40,10 +40,6 @@ export const useMenusStore = defineStore('menus', {
                 this.tree = tree;
                 this.dict = dict;
             } catch {}
-        },
-        setMenus(tree) {
-            this.tree = tree;
-            this.dict = mapTreeToDict(tree);
         },
         getMenuByPath(path) {
             return this.dict[path];
