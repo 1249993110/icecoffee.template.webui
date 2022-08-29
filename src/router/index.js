@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import Layout from '../layout/Index.vue';
-import NProgress from '../plugins/nprogress';
+import nProgress from '../plugins/nprogress';
 import { useKeepAliveStore } from '../store/keep-alive';
 import { useUserInfoStore } from '../store/user-info';
 import Home from '../views/Home.vue';
@@ -68,7 +68,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    NProgress.start();
+    nProgress.start();
     if (to.path === '/login') {
         useUserInfoStore().$reset();
         next();
@@ -82,7 +82,7 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to, from) => {
-    NProgress.done();
+    nProgress.done();
 });
 
 export default router;
