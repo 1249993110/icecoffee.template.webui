@@ -51,12 +51,12 @@ export default defineConfig(({ mode }) => {
             port: 5198,
             open: true,
             proxy: {
-                '/api': {
-                    target: 'http://localhost:5199',
+                '/AqiZengCheng/api': {
+                    target: 'http://localhost:61594/',
                     changeOrigin: true,
                 },
                 '/swagger': {
-                    target: 'http://localhost:5199',
+                    target: 'http://localhost:5199/',
                     changeOrigin: true,
                 }
             },

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { getUserInfo } from '../api/account';
 
-export default useUserInfoStore = defineStore('user-info', {
+export const useUserInfoStore = defineStore('user-info', {
     state: () => {
         return {
             userId: '',

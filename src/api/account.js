@@ -9,6 +9,14 @@ export const signInWithCookie = (model) => {
 };
 
 /**
+ * 通过 Cookie 注销
+ * @returns 
+ */
+ export const signOutWithCookie = () => {
+    return http.delete('/Account/SignOutWithCookie');
+};
+
+/**
  * 获取用户信息
  * @returns 
  */

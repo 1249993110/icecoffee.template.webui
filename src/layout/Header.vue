@@ -30,6 +30,7 @@ import { useMenusStore } from '../store/menus';
 import { useRoute, useRouter } from 'vue-router';
 import myconfirm from '../utils/myconfirm';
 import Icon from '../components/Icon.vue';
+import { signOutWithCookie } from '../api/account';
 
 const title = import.meta.env.VITE_APP_TITEL;
 
@@ -72,6 +73,7 @@ const handleCommand = async (command) => {
     switch (command) {
         case 'logout':
             await myconfirm('您确定要退出登录吗?');
+            await signOutWithCookie();
             keepAliveStore.activePages = [];
             router.push('/login');
             break;

@@ -7,7 +7,7 @@ const getRouteNameByPath = (path) => {
     return name;
 };
 
-export default useKeepAliveStore = defineStore('keep-alive', {
+export const useKeepAliveStore = defineStore('keep-alive', {
     state: () => {
         return {
             activePages: [], // { name: '', path: '' }

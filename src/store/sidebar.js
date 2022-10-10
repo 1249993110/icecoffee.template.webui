@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export default useSidebarStore = defineStore('sidebar', {
+export const useSidebarStore = defineStore('sidebar', {
     state: () => {
         return {
             collapse: false

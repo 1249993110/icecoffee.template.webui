@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { getUserMenus } from '../api/account';
 
-export default useMenusStore = defineStore('menus', {
+export const useMenusStore = defineStore('menus', {
     state: () => {
         return {
             tree: [],
