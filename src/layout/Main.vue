@@ -22,21 +22,18 @@ const menusStore = useMenusStore();
 
 const selectedTab = computed({
     get: () => route.path,
-    set: (path) =>{
-        console.log(1111111111);
-        router.push(path)
-    },
+    set: (path) => router.push(path),
 });
 
 const tabs = computed(() => {
     const result = [];
     keepAliveStore.paths.forEach((path) => {
         const menu = menusStore.getMenuByPath(path);
-        if(menu){
+        if (menu) {
             result.push(menu);
         }
     });
-    
+
     return result;
 });
 
