@@ -68,6 +68,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    console.log(to,from);
     nProgress.start();
     if (to.path === '/login') {
         useUserInfoStore().$reset();
@@ -75,7 +76,7 @@ router.beforeEach((to, from, next) => {
     } else {
         const keepAlive = useKeepAliveStore();
         if (keepAlive.activePages.length === 0 && to.name) {
-            keepAlive.addPage(to.path);
+            keepAlive.addPage(to.path,false);
         }
         next();
     }

@@ -22,7 +22,7 @@ export const useKeepAliveStore = defineStore('keep-alive', {
         },
     },
     actions: {
-        addPage(path) {
+        addPage(path, push = true) {
             if (!this.activePages.some((item) => item.path === path)) {
                 const routeName = getRouteNameByPath(path);
                 this.activePages.push({
@@ -31,7 +31,10 @@ export const useKeepAliveStore = defineStore('keep-alive', {
                 });
             }
 
-            Router.push(path);
+            if (push) {
+                console.log(Router, Router.currentRoute.value.path, path);
+                Router.push(path);
+            }
         },
         removePage(path) {
             let pages = this.activePages;
