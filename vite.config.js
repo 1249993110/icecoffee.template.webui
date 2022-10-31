@@ -27,18 +27,20 @@ export default defineConfig(({ mode }) => {
                     'vue',
                     'vue-router',
                     'pinia',
+                    '@vueuse/core'
                 ],
 
                 // Filepath to generate corresponding .d.ts file.
                 // Defaults to './auto-imports.d.ts' when `typescript` is installed locally.
                 // Set `false` to disable.
-                dts: './auto-imports.d.ts',
+                dts: true,
 
                 // Auto import inside Vue template
                 // see https://github.com/unjs/unimport/pull/15 and https://github.com/unjs/unimport/pull/72
                 vueTemplate: false,
 
                 // resolvers: [ElementPlusResolver()], // 已全局引入, 无需再按需引入
+
             }),
             Components({
                 resolvers: [ElementPlusResolver()], // 生成 ElementPlus 组件 ts 语法提示
@@ -51,8 +53,8 @@ export default defineConfig(({ mode }) => {
             port: 5198,
             open: true,
             proxy: {
-                '/AqiZengCheng/api': {
-                    target: 'http://localhost:61594/',
+                '/api': {
+                    target: 'http://localhost:5199/',
                     changeOrigin: true,
                 },
                 '/swagger': {

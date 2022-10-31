@@ -1,16 +1,16 @@
-import Axios from 'axios';
-import NProgress from '../plugins/nprogress';
+import axios from 'axios';
+import nProgress from '../plugins/nprogress';
 import { ElMessage } from 'element-plus';
-import Router from '../router';
+import router from '../router';
 
-const service = Axios.create({
+const service = axios.create({
     baseURL: import.meta.env.VITE_APP_API_BASE_URL,
     timeout: import.meta.env.VITE_APP_API_TIMEOUT,
 });
 
 service.interceptors.request.use(
     (config) => {
-        NProgress.start();
+        nProgress.start();
         return config;
     },
     (error) => {
@@ -20,11 +20,11 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
     (response) => {
-        NProgress.done();
+        nProgress.done();
         return response.data.data;
     },
     (error) => {
-        NProgress.done();
+        nProgress.done();
 
         if (!error.response) {
             ElMessage.error(error.message);
@@ -34,10 +34,10 @@ service.interceptors.response.use(
         const status = error.response.status;
         switch (status) {
             case 401:
-                Router.push('/login');
+                router.push('/login');
                 break;
             case 403:
-                Router.push('/403');
+                router.push('/403');
                 break;
             case 404:
                 ElMessage.error('请求的资源不存在');

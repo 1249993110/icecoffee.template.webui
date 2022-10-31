@@ -3,7 +3,6 @@ import Layout from '../layout/Index.vue';
 import nProgress from '../plugins/nprogress';
 import { useKeepAliveStore } from '../store/keep-alive';
 import { useUserInfoStore } from '../store/user-info';
-import Home from '../views/Home.vue';
 
 const routes = [
     {
@@ -14,7 +13,7 @@ const routes = [
             {
                 path: 'home',
                 name: 'home',
-                component: Home,
+                component: () => import('../views/Home.vue'),
             },
         ],
     },
