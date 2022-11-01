@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { getUserMenus } from '../api/account';
 
 export const useMenusStore = defineStore('menus', {
     state: () => {
@@ -10,36 +9,36 @@ export const useMenusStore = defineStore('menus', {
     },
     getters: {},
     actions: {
-        async init() {
-            try {
-                const userMenus = await getUserMenus();
-                const tree = [];
-                const dict = {};
+        setMenus(menus) {
+            const tree = [];
+            const dict = {};
 
-                const foreach = (menus, array) => {
-                    menus.forEach((item) => {
-                        const menu = {
-                            label: item.name,
-                            icon: item.icon,
-                            path: item.url,
-                            isExternalLink: item.isExternalLink,
-                            children: [],
-                        };
+            const foreach = (items, array) => {
+                items.forEach((item) => {
+                    const menu = {
+                        label: item.name,
+                        icon: item.icon,
+                        path: item.url,
+                        isExternalLink: item.isExternalLink,
+                        children: [],
+                    };
 
-                        if (item.children && item.children.length) {
-                            foreach(item.children, menu.children);
-                        }
+                    if (item.children && item.children.length) {
+                        foreach(item.children, menu.children);
+                    }
 
-                        array.push(menu);
+                    array.push(menu);
+
+                    if(menu.path){
                         dict[menu.path] = menu;
-                    });
-                };
+                    }
+                });
+            };
 
-                foreach(userMenus, tree);
+            foreach(menus, tree);
 
-                this.tree = tree;
-                this.dict = dict;
-            } catch {}
+            this.tree = tree;
+            this.dict = dict;
         },
         getMenuByPath(path) {
             return this.dict[path];

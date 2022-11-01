@@ -4,7 +4,7 @@
             <div class="title">
                 <span>{{ title }}</span>
             </div>
-            <el-form :model="formModel" :rules="formRules" ref="loginRef" label-width="0px" class="form">
+            <el-form class="form" :model="formModel" :rules="formRules" ref="loginRef" label-width="0px">
                 <el-form-item prop="loginName">
                     <el-input placeholder="用户名或手机号" v-model="formModel.loginName" tabindex="1" ref="inputFocusRef">
                         <template #prepend>
@@ -39,6 +39,7 @@
 
 <script setup>
 import { useKeepAliveStore } from '../store/keep-alive';
+import { useUserInfoStore } from '../store/user-info';
 import { User, Lock } from '@element-plus/icons-vue';
 import { signInWithCookie } from '../api/account';
 import { ElMessage } from 'element-plus';
@@ -46,6 +47,7 @@ import ImageVerify from '../plugins/image-verify';
 
 const title = import.meta.env.VITE_APP_TITEL;
 const keepAliveStore = useKeepAliveStore();
+const userInfoStore = useUserInfoStore();
 
 const formModel = reactive({
     loginName: '',
@@ -59,7 +61,6 @@ const formRules = {
 };
 
 const inputFocusRef = ref();
-
 let imageVerify;
 
 onMounted(() => {
@@ -86,15 +87,16 @@ const handleLogin = async () => {
             return;
         }
 
-        await signInWithCookie({
+        const data = await signInWithCookie({
             loginName: formModel.loginName,
             passwordHash: btoa(formModel.password),
         });
+
+        userInfoStore.setUserInfo(data);
+
         ElMessage.success('登录成功');
         keepAliveStore.addPage('/home');
-    } catch {
-        handleRefrenshCaptcha();
-    }
+    } catch {}
 };
 </script>
 

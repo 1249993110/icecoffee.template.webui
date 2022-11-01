@@ -1,10 +1,13 @@
 <template>
-    <p class="footer">icecoffee.template.webui 1.0 ™ Copyright © 2022 IceCoffee</p>
+    <p class="footer"><a href="https://github.com/1249993110/icecoffee.template.webui" target="_blank">icecoffee.template.webui 1.0 ™ Copyright © 2022 IceCoffee</a></p>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .footer {
     text-align: center;
-    color: #a0a0a0;
+    a {
+        text-decoration: none;
+        color: #a0a0a0;
+    }
 }
 </style>

@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
-import Router from '../router';
+import router from '../router';
 
 const getRouteNameByPath = (path) => {
-    const routes = Router.getRoutes();
+    const routes = router.getRoutes();
     const name = routes.find((item) => item.path === path)?.name;
     return name;
 };
@@ -32,13 +32,13 @@ export const useKeepAliveStore = defineStore('keep-alive', {
             }
 
             if (push) {
-                console.log(Router, Router.currentRoute.value.path, path);
-                Router.push(path);
+                console.log(router, router.currentRoute.value.path, path);
+                router.push(path);
             }
         },
         removePage(path) {
             let pages = this.activePages;
-            let current = Router.currentRoute.value.path;
+            let current = router.currentRoute.value.path;
             // 如果当前选中的是将要移除的tab
             if (current === path) {
                 let newActivePage;
@@ -48,7 +48,7 @@ export const useKeepAliveStore = defineStore('keep-alive', {
                     }
                 });
 
-                Router.push(newActivePage.path);
+                router.push(newActivePage.path);
             }
 
             this.activePages = pages.filter((item) => item.path !== path);
