@@ -13,7 +13,7 @@ export const useUserInfoStore = defineStore('user-info', {
         };
     },
     getters: {
-        isLogin() {
+        isLoggedIn() {
             return !!this.userId;
         },
     },

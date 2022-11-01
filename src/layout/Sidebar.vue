@@ -15,9 +15,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
 import MenuTree from './MenuTree.vue';
-import { useRoute } from 'vue-router';
 import { useMenusStore } from '../store/menus';
 import { useKeepAliveStore } from '../store/keep-alive';
 

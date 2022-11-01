@@ -32,7 +32,6 @@ export const useKeepAliveStore = defineStore('keep-alive', {
             }
 
             if (push) {
-                console.log(router, router.currentRoute.value.path, path);
                 router.push(path);
             }
         },

@@ -23,13 +23,10 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, reactive } from 'vue';
 import { useUserInfoStore } from '../store/user-info';
 import { useKeepAliveStore } from '../store/keep-alive';
 import { useMenusStore } from '../store/menus';
-import { useRoute, useRouter } from 'vue-router';
 import myconfirm from '../utils/myconfirm';
-import Icon from '../components/Icon.vue';
 import { signOutWithCookie } from '../api/account';
 
 const title = import.meta.env.VITE_APP_TITEL;

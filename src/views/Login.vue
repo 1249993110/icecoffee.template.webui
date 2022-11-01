@@ -48,6 +48,7 @@ import ImageVerify from '../plugins/image-verify';
 const title = import.meta.env.VITE_APP_TITEL;
 const keepAliveStore = useKeepAliveStore();
 const userInfoStore = useUserInfoStore();
+const route = useRoute();
 
 const formModel = reactive({
     loginName: '',
@@ -95,7 +96,7 @@ const handleLogin = async () => {
         userInfoStore.setUserInfo(data);
 
         ElMessage.success('登录成功');
-        keepAliveStore.addPage('/home');
+        keepAliveStore.addPage(route.query.redirect || '/home');
     } catch {}
 };
 </script>

@@ -10,9 +10,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
 import { useKeepAliveStore } from '../store/keep-alive';
-import { useRoute, useRouter } from 'vue-router';
 import { useMenusStore } from '../store/menus';
 
 const keepAliveStore = useKeepAliveStore();

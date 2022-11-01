@@ -61,7 +61,7 @@ const promise1 = new Promise((resolve, reject) => {
 });
 
 const promise2 = new Promise((resolve, reject) => {
-    if (userInfoStore.isLogin) {
+    if (userInfoStore.isLoggedIn) {
         resolve();
     } else {
         getUserInfo()
@@ -100,9 +100,9 @@ Promise.all([promise1, promise2])
     .under-header {
         height: calc(100% - 48px);
     }
-}
 
-.router-view-container {
-    height: calc(100% - 56px);
+    .router-view-container {
+        height: calc(100% - 56px);
+    }
 }
 </style>
