@@ -1,15 +1,6 @@
 <template>
     <div class="sidebar">
-        <el-menu
-            class="menu"
-            :default-active="activeMenu"
-            @select="handleSelectMenu"
-            background-color="#001529"
-            text-color="#fff"
-            active-text-color="#ffd04b"
-            unique-opened
-            :collapse="sidebarStore.isCollapse"
-        >
+        <el-menu class="menu" :default-active="activeMenu" @select="handleSelectMenu" unique-opened :collapse="sidebarStore.isCollapse">
             <MenuTree :items="items"></MenuTree>
         </el-menu>
     </div>
@@ -48,6 +39,12 @@ const handleSelectMenu = (path) => {
         &:not(.el-menu--collapse) {
             width: 200px;
         }
+
+        --el-menu-text-color: #fff;
+        --el-menu-hover-text-color: #fff;
+        --el-menu-bg-color: #001529;
+        --el-menu-hover-bg-color: darkslategray;
+        --el-menu-active-color: #ffd04b;
     }
 }
 </style>

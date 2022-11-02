@@ -1,8 +1,8 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
-import router from './router';
 import useElementPlus from './plugins/element';
+import router from './router';
 
 import './plugins/moment';
 
@@ -12,9 +12,8 @@ import './assets/styles/common.scss';
 
 const app = createApp(App);
 app.use(createPinia());
-app.use(router);
-
 useElementPlus(app);
+app.use(router);
 
 app.mount('#app');
 
