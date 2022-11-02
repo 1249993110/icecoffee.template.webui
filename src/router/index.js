@@ -71,22 +71,21 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
+    console.log(to, from);
     nProgress.start();
+
+    const userInfoStore = useUserInfoStore();
 
     // 避免无限重定向
     if (to.path === '/login') {
-        useUserInfoStore().$reset();
+        userInfoStore.$reset();
         return;
     }
-    // 检查用户是否已登录
-    const userInfoStore = useUserInfoStore();
 
-    console.log(to.meta.requiresAuth);
-
-
-    if (to.meta.requiresAuth && !userInfoStore.isLoggedIn) {
-        // 此路由需要授权, 请检查是否已登录
+    // 检查此路由需要授权, 用户是否已登录
+    const isLoggedIn = await userInfoStore.isLoggedIn();
+    if (to.meta.requiresAuth && !isLoggedIn) {
         // 如果没有, 则重定向到登录页面
         return {
             path: '/login',

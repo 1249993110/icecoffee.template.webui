@@ -1,9 +1,14 @@
 <template>
     <div class="header">
         <div class="logo">{{ title }}</div>
+        <div class="collapse-btn">
+            <el-button @click="sidebarStore.handleCollapse">
+                <Icon :name="sidebarStore.isCollapse ? 's-unfold' : 's-fold'"></Icon>
+            </el-button>
+        </div>
         <div class="breadcrumb">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index" class="breadcrumb-separator">{{ item }}</el-breadcrumb-item>
+                <el-breadcrumb-item class="separator" v-for="(item, index) in breadcrumbs" :key="index">{{ item }}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="right">
@@ -28,6 +33,7 @@ import { useKeepAliveStore } from '../store/keep-alive';
 import { useMenusStore } from '../store/menus';
 import myconfirm from '../utils/myconfirm';
 import { signOutWithCookie } from '../api/account';
+import { useSidebarStore } from '../store/sidebar';
 
 const title = import.meta.env.VITE_APP_TITEL;
 
@@ -76,6 +82,8 @@ const handleCommand = async (command) => {
             break;
     }
 };
+
+const sidebarStore = useSidebarStore();
 </script>
 
 <style scoped lang="scss">
@@ -92,19 +100,21 @@ const handleCommand = async (command) => {
         display: flex;
     }
 
+    .collapse-btn {
+        margin-left: 16px;
+        button {
+            background-color: transparent;
+            border: none;
+        }
+    }
+
     .breadcrumb {
         height: 100%;
         display: flex;
         align-items: center;
-        margin-left: 26px;
+        margin-left: 16px;
 
-        .breadcrumb-button {
-            margin-right: 26px;
-            background-color: transparent;
-            border-color: transparent;
-        }
-
-        .breadcrumb-separator {
+        .separator {
             color: floralwhite;
         }
     }

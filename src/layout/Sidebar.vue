@@ -8,6 +8,7 @@
             text-color="#fff"
             active-text-color="#ffd04b"
             unique-opened
+            :collapse="sidebarStore.isCollapse"
         >
             <MenuTree :items="items"></MenuTree>
         </el-menu>
@@ -18,10 +19,12 @@
 import MenuTree from './MenuTree.vue';
 import { useMenusStore } from '../store/menus';
 import { useKeepAliveStore } from '../store/keep-alive';
+import { useSidebarStore } from '../store/sidebar';
 
 const route = useRoute();
 const menusStore = useMenusStore();
 const keepAliveStore = useKeepAliveStore();
+const sidebarStore = useSidebarStore();
 
 const activeMenu = computed(() => route.path);
 
@@ -42,6 +45,9 @@ const handleSelectMenu = (path) => {
     height: 100%;
     .menu {
         min-height: 100%;
+        &:not(.el-menu--collapse) {
+            width: 200px;
+        }
     }
 }
 </style>

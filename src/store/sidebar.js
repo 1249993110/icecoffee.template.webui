@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useSidebarStore = defineStore('sidebar', {
     state: () => {
         return {
-            collapse: false
+            isCollapse: false
         }
     },
     getters: {
@@ -11,7 +11,7 @@ export const useSidebarStore = defineStore('sidebar', {
     },
     actions: {
         handleCollapse() {
-            this.collapse = !this.collapse;
+            this.isCollapse = !this.isCollapse;
         }
     }
 })

@@ -2,15 +2,15 @@
     <template v-for="(menu, index) in items" :key="index">
         <el-sub-menu v-if="menu.children && menu.children.length" :index="menu.path || index.toString()">
             <template #title>
-                <Icon class="menu-icon" :name="menu.icon"></Icon>
-                <span>{{ menu.label }}</span>
+                <Icon :name="menu.icon"></Icon>
+                <span class="label">{{ menu.label }}</span>
             </template>
             <MenuTree :items="menu.children"></MenuTree>
         </el-sub-menu>
         <el-menu-item v-else :index="menu.path">
-            <Icon class="menu-icon" :name="menu.icon"></Icon>
+            <Icon :name="menu.icon"></Icon>
             <template #title>
-                <span>{{ menu.label }}</span>
+                <span class="label">{{ menu.label }}</span>
             </template>
         </el-menu-item>
     </template>
@@ -23,7 +23,7 @@ defineProps({
 </script>
 
 <style scoped>
-.menu-icon {
-    margin-right: 10px;
+.label {
+    margin-left: 10px;
 }
 </style>

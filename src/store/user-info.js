@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { getUserInfo } from '../api/account';
 
 export const useUserInfoStore = defineStore('user-info', {
     state: () => {
@@ -12,14 +13,23 @@ export const useUserInfoStore = defineStore('user-info', {
             areas: [],
         };
     },
-    getters: {
-        isLoggedIn() {
-            return !!this.userId;
-        },
-    },
+    getters: {},
     actions: {
         setUserInfo(userInfo) {
             Object.assign(this, userInfo);
+        },
+        async isLoggedIn() {
+            try {
+                if (this.userId) {
+                    return true;
+                }
+
+                const data = await getUserInfo();
+                this.setUserInfo(data);
+                return true;
+            } catch (error) {
+                return false;
+            }
         },
     },
 });

@@ -4,13 +4,13 @@
             <Header></Header>
         </el-header>
         <el-container class="under-header">
-            <el-aside width="210px">
+            <el-aside class="aside" :width="sidebarWidth">
                 <Sidebar></Sidebar>
             </el-aside>
             <el-container>
                 <el-main>
                     <Main></Main>
-                    <div class="router-view-container">
+                    <div class="router-view">
                         <router-view v-slot="{ Component }">
                             <transition mode="out-in">
                                 <keep-alive :include="keepAliveStore.includes">
@@ -34,14 +34,12 @@ import Header from './Header.vue';
 import Main from './Main.vue';
 import Footer from './Footer.vue';
 import { useKeepAliveStore } from '../store/keep-alive';
-import { useUserInfoStore } from '../store/user-info';
 import { useMenusStore } from '../store/menus';
-import { getUserInfo } from '../api/account';
+import { useSidebarStore } from '../store/sidebar';
 import { getUserMenus } from '../api/account';
 import { ElLoading, ElMessage } from 'element-plus';
 
 const keepAliveStore = useKeepAliveStore();
-const userInfoStore = useUserInfoStore();
 const menusStore = useMenusStore();
 
 const loading = ElLoading.service({
@@ -49,39 +47,18 @@ const loading = ElLoading.service({
     text: 'Loading',
 });
 
-const promise1 = new Promise((resolve, reject) => {
-    getUserMenus()
-        .then((data) => {
-            menusStore.setMenus(data);
-            resolve();
-        })
-        .catch((error) => {
-            reject('获取用户菜单失败');
-        });
-});
-
-const promise2 = new Promise((resolve, reject) => {
-    if (userInfoStore.isLoggedIn) {
-        resolve();
-    } else {
-        getUserInfo()
-            .then((data) => {
-                userInfoStore.setUserInfo(data);
-                resolve();
-            })
-            .catch((error) => {
-                reject('获取用户信息失败');
-            });
-    }
-});
-
-Promise.all([promise1, promise2])
-    .then(() => {
+getUserMenus()
+    .then((data) => {
+        menusStore.setMenus(data);
         loading.close();
     })
     .catch((error) => {
-        ElMessage.error(error);
+        ElMessage.error('获取用户菜单失败');
     });
+
+const sidebarStore = useSidebarStore();
+const sidebarWidth = computed(() => (sidebarStore.isCollapse ? '64px' : '200px'));
+//const sidebarWidth = '200px';
 </script>
 
 <style scoped lang="scss">
@@ -99,10 +76,15 @@ Promise.all([promise1, promise2])
     }
     .under-header {
         height: calc(100% - 48px);
-    }
 
-    .router-view-container {
-        height: calc(100% - 56px);
+        .aside {
+            transition: 0.5s;
+            overflow-x: hidden;
+        }
+
+        .router-view {
+            height: calc(100% - 56px);
+        }
     }
 }
 </style>
