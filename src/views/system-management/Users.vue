@@ -30,7 +30,7 @@
                         <div class="table-expand-column-content">
                             <p>创建日期: {{ row.createdDate }}</p>
                             <p>上次登录时间: {{ row.lastLoginTime }}</p>
-                            <p>上次登录IP: {{ row.lastLoginIpAddress }}</p>
+                            <p>上次登录IP: {{ row.lastLoginIp }}</p>
                             <p>地址: {{ row.address }}</p>
                             <p>说明: {{ row.description }}</p>
                         </div>

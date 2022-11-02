@@ -108,16 +108,9 @@ const rules = reactive({
         {
             required: true,
             trigger: 'blur',
-            message: '请填写菜单名',
+            message: '请填写菜单名称',
         },
-    ],
-    url: [
-        {
-            required: true,
-            trigger: 'blur',
-            message: '请填写菜单链接地址',
-        },
-    ],
+    ]
 });
 
 const submitForm = async () => {

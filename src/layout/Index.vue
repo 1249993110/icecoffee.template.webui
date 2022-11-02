@@ -34,31 +34,11 @@ import Header from './Header.vue';
 import Main from './Main.vue';
 import Footer from './Footer.vue';
 import { useKeepAliveStore } from '../store/keep-alive';
-import { useMenusStore } from '../store/menus';
 import { useSidebarStore } from '../store/sidebar';
-import { getUserMenus } from '../api/account';
-import { ElLoading, ElMessage } from 'element-plus';
 
 const keepAliveStore = useKeepAliveStore();
-const menusStore = useMenusStore();
-
-const loading = ElLoading.service({
-    lock: true,
-    text: 'Loading',
-});
-
-getUserMenus()
-    .then((data) => {
-        menusStore.setMenus(data);
-        loading.close();
-    })
-    .catch((error) => {
-        ElMessage.error('获取用户菜单失败');
-    });
-
 const sidebarStore = useSidebarStore();
 const sidebarWidth = computed(() => (sidebarStore.isCollapse ? '64px' : '200px'));
-//const sidebarWidth = '200px';
 </script>
 
 <style scoped lang="scss">

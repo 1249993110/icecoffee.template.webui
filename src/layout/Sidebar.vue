@@ -11,11 +11,26 @@ import MenuTree from './MenuTree.vue';
 import { useMenusStore } from '../store/menus';
 import { useKeepAliveStore } from '../store/keep-alive';
 import { useSidebarStore } from '../store/sidebar';
+import { ElLoading, ElMessage } from 'element-plus';
+import { getUserMenus } from '../api/account';
 
 const route = useRoute();
 const menusStore = useMenusStore();
 const keepAliveStore = useKeepAliveStore();
 const sidebarStore = useSidebarStore();
+
+const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+});
+getUserMenus()
+    .then((data) => {
+        menusStore.setMenus(data);
+        loading.close();
+    })
+    .catch((error) => {
+        ElMessage.error('获取用户菜单失败');
+    });
 
 const activeMenu = computed(() => route.path);
 
@@ -36,15 +51,11 @@ const handleSelectMenu = (path) => {
     height: 100%;
     .menu {
         min-height: 100%;
+
         &:not(.el-menu--collapse) {
             width: 200px;
         }
 
-        --el-menu-text-color: #fff;
-        --el-menu-hover-text-color: #fff;
-        --el-menu-bg-color: #001529;
-        --el-menu-hover-bg-color: darkslategray;
-        --el-menu-active-color: #ffd04b;
     }
 }
 </style>

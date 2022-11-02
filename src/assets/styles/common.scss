@@ -22,3 +22,11 @@
         align-items: center;
     }
 }
+
+.el-menu {
+    --el-menu-text-color: #fff;
+    --el-menu-hover-text-color: #fff;
+    --el-menu-bg-color: #001529;
+    --el-menu-hover-bg-color: darkslategray;
+    --el-menu-active-color: #ffd04b;
+}
