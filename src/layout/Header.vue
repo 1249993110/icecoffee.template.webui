@@ -1,18 +1,21 @@
 <template>
     <div class="header">
         <div class="logo">{{ title }}</div>
-        <div class="collapse-btn">
-            <el-button @click="sidebarStore.handleCollapse">
-                <Icon :name="sidebarStore.isCollapse ? 's-unfold' : 's-fold'"></Icon>
-            </el-button>
-        </div>
-        <div class="breadcrumb">
+        <IconButton class="margin-left" :name="sidebarStore.isCollapse ? 's-unfold' : 's-fold'" size="18" @click="sidebarStore.handleCollapse"></IconButton>
+        <div class="breadcrumb margin-left">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item class="separator" v-for="(item, index) in breadcrumbs" :key="index">{{ item }}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="right">
-            <el-dropdown @command="handleCommand">
+            <el-tooltip effect="dark" content="刷新" placement="bottom">
+                <IconButton :class="{ reloading: keepAliveStore.isReloading }" name="refresh" size="18" @click="keepAliveStore.refresh"></IconButton>
+            </el-tooltip>
+            <el-tooltip effect="dark" :content="isFullscreen ? '退回全屏' : '全屏'" placement="bottom">
+                <IconButton class="margin-left" :name="isFullscreen ? 'full' : 'fullscreen-shrink'" size="18" @click="handleScreenfull"></IconButton>
+            </el-tooltip>
+            
+            <el-dropdown class="margin-left" @command="handleCommand">
                 <span class="el-dropdown-link">
                     {{ userInfoStore.displayName }}
                     <Icon name="arrow-down"></Icon>
@@ -34,6 +37,8 @@ import { useMenusStore } from '../store/menus';
 import myconfirm from '../utils/myconfirm';
 import { signOutWithCookie } from '../api/account';
 import { useSidebarStore } from '../store/sidebar';
+import screenfull from 'screenfull';
+import { ElMessage } from 'element-plus';
 
 const title = import.meta.env.VITE_APP_TITEL;
 
@@ -78,12 +83,25 @@ const handleCommand = async (command) => {
             await myconfirm('您确定要退出登录吗?');
             await signOutWithCookie();
             keepAliveStore.activePages = [];
+            ElMessage.success('退出成功');
             router.push('/login');
             break;
     }
 };
 
 const sidebarStore = useSidebarStore();
+
+const isFullscreen = ref(false);
+screenfull.on('change', () => {
+    isFullscreen.value = !screenfull.isFullscreen;
+});
+const handleScreenfull = () => {
+    if (!screenfull.isEnabled) {
+        ElMessage.warning('您的浏览器不支出全屏');
+    }
+
+    screenfull.toggle();
+};
 </script>
 
 <style scoped lang="scss">
@@ -100,19 +118,14 @@ const sidebarStore = useSidebarStore();
         display: flex;
     }
 
-    .collapse-btn {
-        margin-left: 16px;
-        button {
-            background-color: transparent;
-            border: none;
-        }
+    .margin-left {
+        margin-left: 24px;
     }
 
     .breadcrumb {
         height: 100%;
         display: flex;
         align-items: center;
-        margin-left: 16px;
 
         .separator {
             color: floralwhite;
@@ -121,15 +134,10 @@ const sidebarStore = useSidebarStore();
 
     .right {
         margin-left: auto;
-        .el-dropdown {
-            margin-left: 8px;
-            vertical-align: middle;
-            .el-dropdown-link {
-                cursor: pointer;
-                color: var(--el-color-primary);
-                display: flex;
-                align-items: center;
-            }
+
+        .reloading {
+            transform: rotate(360deg);
+            transition: 0.6s linear;
         }
     }
 }

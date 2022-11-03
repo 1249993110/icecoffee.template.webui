@@ -11,7 +11,7 @@
                 <el-main>
                     <Main></Main>
                     <div class="router-view">
-                        <router-view v-slot="{ Component }">
+                        <router-view v-slot="{ Component }" v-if="keepAliveStore.isRouterAlive">
                             <transition mode="out-in">
                                 <keep-alive :include="keepAliveStore.includes">
                                     <component :is="Component" />

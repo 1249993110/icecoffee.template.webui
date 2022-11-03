@@ -6,6 +6,13 @@
   "description": "饿了么原生UI+ColorUI图标集合",
   "glyphs": [
     {
+      "icon_id": "15838495",
+      "name": "fullscreen-shrink",
+      "font_class": "fullscreen-shrink",
+      "unicode": "e879",
+      "unicode_decimal": 59513
+    },
+    {
       "icon_id": "11981428",
       "name": "city",
       "font_class": "city",

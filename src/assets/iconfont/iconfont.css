@@ -1,6 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3207946 */
-  src: url('iconfont.svg?t=1651885984091#iconfont') format('svg');
+  src: url('iconfont.woff2?t=1667455358288') format('woff2'),
+       url('iconfont.ttf?t=1667455358288') format('truetype'),
+       url('iconfont.svg?t=1667455358288#iconfont') format('svg');
 }
 
 .iconfont {
@@ -9,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-fullscreen-shrink:before {
+  content: "\e879";
 }
 
 .icon-city:before {

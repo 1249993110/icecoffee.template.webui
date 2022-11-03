@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { nextTick } from 'vue';
 import router from '../router';
 
 const getRouteNameByPath = (path) => {
@@ -11,6 +12,8 @@ export const useKeepAliveStore = defineStore('keep-alive', {
     state: () => {
         return {
             activePages: [], // { name: '', path: '' }
+            isRouterAlive: true,
+            isReloading: false,
         };
     },
     getters: {
@@ -51,6 +54,18 @@ export const useKeepAliveStore = defineStore('keep-alive', {
             }
 
             this.activePages = pages.filter((item) => item.path !== path);
+        },
+        refresh() {
+            this.isRouterAlive = false;
+            this.isReloading = true;
+
+            nextTick(() => {
+                this.isRouterAlive = true;
+            });
+
+            setTimeout(() => {
+                this.isReloading = false;
+            }, 600);
         },
     },
 });
