@@ -2,8 +2,8 @@
     <div class="tab-content">
         <div class="tab-content-header">
             <div>
-                <el-button type="primary" @click="handleAddUser">新增</el-button>
-                <el-button type="danger" @click="handleDeleteBatch">批量删除</el-button>
+                <el-button type="primary" @click="handleAddUser"><Icon name="roundaddfill" />新增</el-button>
+                <el-button type="danger" @click="handleDeleteBatch"><Icon name="delete-solid" />批量删除</el-button>
             </div>
             <div class="tab-content-header-search">
                 <el-input style="width: 300px" v-model="pagination.keyword" placeholder="请输入搜索内容" clearable @keyup.enter.native="getData"></el-input>
@@ -49,8 +49,8 @@
                 </el-table-column>
                 <el-table-column label="操作" width="320">
                     <template #default="scope">
-                        <el-button size="small" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
-                        <el-button size="small" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+                        <el-button size="small" type="primary" @click="handleEdit(scope.row)"><Icon name="edit-outline" />编辑</el-button>
+                        <el-button size="small" type="danger" @click="handleDelete(scope.row)"><Icon name="delete" />删除</el-button>
                         <el-button size="small" color="#626aef" style="color: white" @click="handleAssociateRole(scope.row)">关联角色</el-button>
                     </template>
                 </el-table-column>

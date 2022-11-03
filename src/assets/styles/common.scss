@@ -24,9 +24,57 @@
 }
 
 .el-menu {
-    --el-menu-text-color: #fff;
-    --el-menu-hover-text-color: #fff;
+    --el-menu-text-color: #ffffffb3;
     --el-menu-bg-color: #001529;
     --el-menu-hover-bg-color: darkslategray;
-    --el-menu-active-color: #ffd04b;
+    --el-menu-active-color: #fff;
+
+    .el-sub-menu {
+        &:hover {
+            color: #fff;
+        }
+        .icon {
+            margin-right: 10px;
+        }
+
+        .el-menu--inline {
+            background-color: #0c2135;
+        }
+    }
+
+    .el-menu-item {
+        &:hover {
+            color: #fff;
+        }
+
+        &.is-active {
+            background-color: #0960bd;
+        }
+
+        .icon {
+            margin-right: 10px;
+        }
+    }
+
+    &.el-menu--popup {
+        background-color: #0c2135;
+    }
+}
+
+.el-menu--collapse {
+    .el-sub-menu,
+    .el-menu-item {
+        .icon {
+            margin-right: 0;
+        }
+
+        &.is-active {
+            background-color: #00061a;
+
+            .el-tooltip__trigger {
+                border-left: 4px solid #0960bd;
+                padding: 0 16px;
+            }
+        }
+    }
 }
