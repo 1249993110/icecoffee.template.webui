@@ -119,13 +119,12 @@ getData();
 const handleEdit = (row) => {
     addOrEditUserRef.value.show(row);
 };
-const handleDelete = (row) => {
-    myconfirm('您确定删除选中的用户吗?').then(() => {
-        api.deleteUser(row.id).then(() => {
-            ElMessage.success('删除成功');
-            getData();
-        });
-    });
+const handleDelete = async (row) => {
+    if (await myconfirm('您确定删除选中的用户吗?')) {
+        await api.deleteUser(row.id);
+        ElMessage.success('删除成功');
+        getData();
+    }
 };
 
 const handleAddUser = () => {

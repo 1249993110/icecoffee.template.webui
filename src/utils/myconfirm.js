@@ -11,8 +11,10 @@ export default function myconfirm(message, title = '系统提示', type = '') {
             type: type,
         })
             .then(() => {
-                resolve();
+                resolve(true);
             })
-            .catch((error) => {});
+            .catch(() => {
+                resolve(false);
+            });
     });
 }

@@ -25,3 +25,7 @@ export const deleteUser = async (userId) => {
 export const deleteUsers = async (deleteUserParams) => {
     return await http.delete('/SystemManagement/Users/', { data: deleteUserParams });
 };
+
+export const modifyUserPassword = async (userId, passwordHash) => {
+    return await http.put(`/SystemManagement/Users/${userId}`, { passwordHash: passwordHash });
+};

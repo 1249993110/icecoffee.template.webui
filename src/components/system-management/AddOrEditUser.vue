@@ -2,13 +2,16 @@
     <el-dialog :title="isAdd ? '新增用户' : '编辑用户'" v-model="visible" width="618px" :close-on-click-modal="false" @closed="handleClosed">
         <el-form ref="formRef" :model="formModel" status-icon :rules="rules" label-width="120px">
             <el-form-item label="用户名称" prop="name">
-                <el-input v-model="formModel.name" clearable ></el-input>
+                <el-input v-model="formModel.name" clearable></el-input>
             </el-form-item>
             <el-form-item label="显示名称" prop="displayName">
                 <el-input v-model="formModel.displayName" clearable></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="password">
-                <el-input v-model="formModel.password" type="password" :placeholder="isAdd ? '默认123456' : '为空时默认不修改'" autocomplete="off" show-password></el-input>
+            <el-form-item label="密码" prop="password" v-if="isAdd">
+                <el-input v-model="formModel.password" type="password" autocomplete="off" show-password></el-input>
+            </el-form-item>
+            <el-form-item label="密码" v-else>
+                <el-button @click="handleModifyPassword" type="success">修改密码</el-button>
             </el-form-item>
             <el-form-item label="电话号码" prop="phoneNumber">
                 <el-input v-model="formModel.phoneNumber" clearable></el-input>
@@ -36,8 +39,9 @@
 </template>
 
 <script setup>
-import { addUser, editUser } from '../../api/system-management/users';
+import { addUser, editUser, modifyUserPassword } from '../../api/system-management/users';
 import { ElMessage, ElLoading } from 'element-plus';
+import myprompt from '../../utils/myprompt';
 
 const isAdd = ref(false);
 const visible = ref(false);
@@ -67,7 +71,14 @@ const rules = reactive({
         {
             required: true,
             trigger: 'blur',
-            message: '请填写用户昵称',
+            message: '请填写显示名称',
+        },
+    ],
+    password: [
+        {
+            required: true,
+            trigger: 'blur',
+            message: '请填写用户密码',
         },
     ],
 });
@@ -83,45 +94,22 @@ const submitForm = async () => {
             background: 'rgba(0, 0, 0, 0.7)',
         });
 
-        const params = formModel.value;
+        const params = { ...formModel.value, passwordHash: btoa(formModel.value.password) };
 
-        if (isAdd.value) {
-            if (!params.password) {
-                params.passwordHash = btoa(123456);
-            } else {
-                params.passwordHash = btoa(params.password);
-            }
-
-            try {
-                await addUser(params);
-                ElMessage.success('保存成功');
-                visible.value = false;
-                emit('submit');
-            } finally {
-                loading.close();
-            }
-        } else {
-            if (!params.password) {
-                params.passwordHash = '';
-            } else {
-                params.passwordHash = btoa(params.password);
-            }
-
-            try {
-                await editUser(params);
-                ElMessage.success('保存成功');
-                visible.value = false;
-                emit('submit');
-            } finally {
-                loading.close();
-            }
+        try {
+            isAdd.value ? await addUser(params) : await editUser(params);
+            ElMessage.success('保存成功');
+            visible.value = false;
+            emit('submit');
+        } finally {
+            loading.close();
         }
     });
 };
 
-const handleClosed = ()=>{
+const handleClosed = () => {
     formRef.value.resetFields();
-}
+};
 
 const show = (editModel) => {
     if (!editModel) {
@@ -137,6 +125,14 @@ const show = (editModel) => {
 };
 
 defineExpose({ show });
+
+const handleModifyPassword = async () => {
+    try {
+        const password = await myprompt('请输入新密码', /^(?=.*[A-Za-z])(?=.*\d)(?=.*[.?`~!@#$%^&*()_])[A-Za-z\d.?`~!@#$%^&*()_]{8,16}$/, '密码必须是8-16位英文字母、数字、字符组合');
+        await modifyUserPassword(formModel.value.id, btoa(password));
+        ElMessage.success('修改成功');
+    } catch {}
+};
 </script>
 
 <style></style>
