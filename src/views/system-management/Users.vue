@@ -2,12 +2,12 @@
     <div class="tab-content">
         <div class="tab-content-header">
             <div>
-                <el-button type="primary" @click="handleAddUser"><Icon name="roundaddfill" />新增</el-button>
-                <el-button type="danger" @click="handleDeleteBatch"><Icon name="delete-solid" />批量删除</el-button>
+                <el-button type="primary" @click="handleAddUser"><MinIcon name="add" />新增用户</el-button>
+                <el-button type="danger" @click="handleDeleteBatch"><MinIcon name="delete" />批量删除</el-button>
             </div>
             <div class="tab-content-header-search">
                 <el-input style="width: 300px" v-model="pagination.keyword" placeholder="请输入搜索内容" clearable @keyup.enter.native="getData"></el-input>
-                <el-button type="primary" @click="getData">
+                <el-button class="search-button" type="primary" @click="getData">
                     <template #icon>
                         <Icon name="search"></Icon>
                     </template>
@@ -15,16 +15,7 @@
             </div>
         </div>
         <div class="tab-content-main">
-            <el-table
-                :data="tableData"
-                v-loading="loading"
-                border
-                stripe
-                height="100%"
-                highlight-current-row
-                ref="tableRef"
-                @selection-change="handleSelectionChange"
-            >
+            <el-table :data="tableData" v-loading="loading" border stripe height="100%" highlight-current-row ref="tableRef" @selection-change="handleSelectionChange">
                 <el-table-column type="expand">
                     <template #default="{ row }">
                         <div class="table-expand-column-content">
@@ -49,8 +40,8 @@
                 </el-table-column>
                 <el-table-column label="操作" width="320">
                     <template #default="scope">
-                        <el-button size="small" type="primary" @click="handleEdit(scope.row)"><Icon name="edit-outline" />编辑</el-button>
-                        <el-button size="small" type="danger" @click="handleDelete(scope.row)"><Icon name="delete" />删除</el-button>
+                        <el-button size="small" type="primary" @click="handleEdit(scope.row)"><MinIcon name="edit-outline" />编辑</el-button>
+                        <el-button size="small" type="danger" @click="handleDelete(scope.row)"><MinIcon name="delete" />删除</el-button>
                         <el-button size="small" color="#626aef" style="color: white" @click="handleAssociateRole(scope.row)">关联角色</el-button>
                     </template>
                 </el-table-column>
@@ -157,11 +148,14 @@ const handleDeleteBatch = () => {
 const handleAssociateRole = (row) => {
     associateRoleRef.value.show(row.id);
 };
-
 </script>
 
 <style scoped lang="scss">
 .table-expand-column-content {
     padding: 0 48px;
+}
+
+.search-button {
+    margin-left: 4px;
 }
 </style>

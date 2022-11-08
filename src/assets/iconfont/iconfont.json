@@ -6,6 +6,13 @@
   "description": "饿了么原生UI+ColorUI图标集合",
   "glyphs": [
     {
+      "icon_id": "15838498",
+      "name": "fullscreen-expand",
+      "font_class": "fullscreen-expand",
+      "unicode": "e87a",
+      "unicode_decimal": 59514
+    },
+    {
       "icon_id": "15838495",
       "name": "fullscreen-shrink",
       "font_class": "fullscreen-shrink",
@@ -4071,13 +4078,6 @@
       "font_class": "friend",
       "unicode": "e6ab",
       "unicode_decimal": 59051
-    },
-    {
-      "icon_id": "21730724",
-      "name": "full",
-      "font_class": "full",
-      "unicode": "e6ac",
-      "unicode_decimal": 59052
     },
     {
       "icon_id": "21730725",

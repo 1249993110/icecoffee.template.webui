@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
     AssociateMenu: typeof import('./src/components/system-management/AssociateMenu.vue')['default']
     AssociatePermission: typeof import('./src/components/system-management/AssociatePermission.vue')['default']
     AssociateRole: typeof import('./src/components/system-management/AssociateRole.vue')['default']
+    copy: typeof import('./src/components/IconButton copy.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
@@ -47,6 +48,7 @@ declare module '@vue/runtime-core' {
     FormDialog: typeof import('./src/components/FormDialog.vue')['default']
     Icon: typeof import('./src/components/Icon.vue')['default']
     IconButton: typeof import('./src/components/IconButton.vue')['default']
+    MinIcon: typeof import('./src/components/MinIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

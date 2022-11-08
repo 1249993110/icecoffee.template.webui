@@ -6,7 +6,7 @@
             </div>
             <el-form class="form" :model="formModel" :rules="formRules" ref="loginRef" label-width="0px">
                 <el-form-item prop="loginName">
-                    <el-input placeholder="用户名或手机号" v-model="formModel.loginName" tabindex="1" ref="inputFocusRef">
+                    <el-input placeholder="用户名或手机号" v-model="formModel.loginName" tabindex="1" autofocus>
                         <template #prepend>
                             <el-button class="icon-btn" :icon="User" tabindex="-1"></el-button>
                         </template>
@@ -61,11 +61,9 @@ const formRules = {
     code: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
 };
 
-const inputFocusRef = ref();
 let imageVerify;
 
 onMounted(() => {
-    inputFocusRef.value.focus();
     imageVerify = new ImageVerify({
         id: 'captchaContainer',
         width: 90,
@@ -88,15 +86,19 @@ const handleLogin = async () => {
             return;
         }
 
-        const data = await signInWithCookie({
-            loginName: formModel.loginName,
-            passwordHash: btoa(formModel.password),
-        });
+        try {
+            const data = await signInWithCookie({
+                loginName: formModel.loginName,
+                passwordHash: btoa(formModel.password),
+            });
 
-        userInfoStore.setUserInfo(data);
+            userInfoStore.setUserInfo(data);
 
-        ElMessage.success('登录成功');
-        keepAliveStore.addPage(route.query.redirect || '/home');
+            ElMessage.success('登录成功');
+            keepAliveStore.addPage(route.query.redirect || '/home');
+        } catch {
+            handleRefrenshCaptcha();
+        }
     } catch {}
 };
 </script>

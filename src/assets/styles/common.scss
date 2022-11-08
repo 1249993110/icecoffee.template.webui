@@ -1,5 +1,5 @@
 .tab-content {
-    height: calc(100vh - 192px);
+    height: 100%;
 
     .tab-content-header {
         height: 48px;
@@ -84,4 +84,32 @@
     color: var(--el-color-primary);
     display: flex;
     align-items: center;
+}
+
+.el-dialog {
+    padding: 12px;
+    .el-dialog__body {
+        padding: 12px;
+    }
+    .el-dialog__header {
+        .el-dialog__title {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        margin-right: 0;
+        padding: 2px 20px 12px 20px;
+        border-bottom: 1px solid #E4E4E4;
+    }
+    .el-dialog__footer {
+        padding: 0 16px 16px 0;
+        .dialog-footer {
+            .el-button {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+            .el-button+.el-button {
+                margin-left: 30px;
+            }
+        }
+    }
 }

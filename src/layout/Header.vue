@@ -11,10 +11,10 @@
             <el-tooltip effect="dark" content="刷新" placement="bottom">
                 <IconButton :class="{ reloading: keepAliveStore.isReloading }" name="refresh" size="18" @click="keepAliveStore.refresh"></IconButton>
             </el-tooltip>
-            <el-tooltip effect="dark" :content="isFullscreen ? '退回全屏' : '全屏'" placement="bottom">
-                <IconButton class="margin-left" :name="isFullscreen ? 'full' : 'fullscreen-shrink'" size="18" @click="handleScreenfull"></IconButton>
+            <el-tooltip effect="dark" :content="isFullscreen ? '退出全屏' : '全屏'" placement="bottom">
+                <IconButton class="margin-left" :name="isFullscreen ? 'fullscreen-shrink' : 'fullscreen-expand'" size="18" @click="handleScreenfull"></IconButton>
             </el-tooltip>
-            
+
             <el-dropdown class="margin-left" @command="handleCommand">
                 <span class="el-dropdown-link">
                     {{ userInfoStore.displayName }}
@@ -93,7 +93,7 @@ const sidebarStore = useSidebarStore();
 
 const isFullscreen = ref(false);
 screenfull.on('change', () => {
-    isFullscreen.value = !screenfull.isFullscreen;
+    isFullscreen.value = screenfull.isFullscreen;
 });
 const handleScreenfull = () => {
     if (!screenfull.isEnabled) {
@@ -102,6 +102,11 @@ const handleScreenfull = () => {
 
     screenfull.toggle();
 };
+
+onKeyStroke('F11', (e) => {
+    e.preventDefault();
+    handleScreenfull();
+});
 </script>
 
 <style scoped lang="scss">
