@@ -4,7 +4,7 @@
             <el-form-item label="角色名称" prop="name">
                 <el-input v-model="formModel.name"></el-input>
             </el-form-item>
-            <el-form-item label="说明" prop="description">
+            <el-form-item label="备注" prop="description">
                 <el-input v-model="formModel.description"></el-input>
             </el-form-item>
         </el-form>

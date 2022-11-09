@@ -16,7 +16,7 @@
             <el-form-item label="地址" prop="url">
                 <el-input v-model="formModel.url"></el-input>
             </el-form-item>
-            <el-form-item label="说明" prop="description">
+            <el-form-item label="备注" prop="description">
                 <el-input v-model="formModel.description"></el-input>
             </el-form-item>
             <el-form-item label="是否为外链" prop="isExternalLink">

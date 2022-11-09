@@ -31,7 +31,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="url" label="地址" sortable />
-                <el-table-column prop="description" label="说明" sortable />
+                <el-table-column prop="description" label="备注" sortable />
                 <el-table-column prop="isEnabled" label="是否启用" width="112">
                     <template #default="scope">
                         <el-tag :type="scope.row.isEnabled ? 'success' : 'danger'">{{ scope.row.isEnabled ? '是' : '否' }}</el-tag>

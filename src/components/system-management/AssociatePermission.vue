@@ -4,7 +4,7 @@
             <el-table-column type="selection" width="55" />
             <el-table-column type="index" label="序号" width="55" />
             <el-table-column prop="area" label="区域" sortable />
-            <el-table-column prop="description" label="说明" />
+            <el-table-column prop="description" label="备注" />
         </el-table>
         <template #footer>
             <span class="dialog-footer">

@@ -30,7 +30,7 @@
                 <el-table-column type="selection" width="55" />
                 <el-table-column type="index" label="序号" width="55" />
                 <el-table-column prop="area" label="区域" sortable />
-                <el-table-column prop="description" label="说明" sortable />
+                <el-table-column prop="description" label="备注" sortable />
                 <el-table-column label="操作">
                     <template #default="scope">
                         <el-button size="small" type="primary" @click="handleEdit(scope.row)">编辑</el-button>

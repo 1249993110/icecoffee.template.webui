@@ -28,7 +28,7 @@
                 <el-table-column type="selection" width="55" />
                 <el-table-column type="index" label="序号" width="55" />
                 <el-table-column prop="name" label="角色名称" sortable />
-                <el-table-column prop="description" label="说明" sortable />
+                <el-table-column prop="description" label="备注" sortable />
                 <el-table-column label="操作" width="450">
                     <template #default="scope">
                         <el-button size="small" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
