@@ -20,7 +20,6 @@
 </template>
 
 <script setup>
-import { getRoleMenus, editRoleMenus } from '../../api/system-management/role-menus';
 import { getMenus } from '../../api/system-management/menus';
 import { ElMessage } from 'element-plus';
 

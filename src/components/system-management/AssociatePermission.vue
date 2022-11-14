@@ -16,8 +16,6 @@
 </template>
 
 <script setup>
-import { getRolePermissions, editRolePermissions } from '../../api/system-management/role-permissions';
-import { getPermissions } from '../../api/system-management/permissions.js';
 import { ElMessage } from 'element-plus';
 
 const visible = ref(false);

@@ -19,14 +19,17 @@
             <el-form-item label="邮箱" prop="email">
                 <el-input v-model="formModel.email" clearable></el-input>
             </el-form-item>
+            <el-form-item label="是否启用" prop="isEnabled">
+                <el-switch v-model="formModel.isEnabled" />
+            </el-form-item>
+            <el-form-item label="用户角色" prop="roleIds">
+                <RoleSelector class="role-select" v-model="formModel.roleIds" :options="optionalRoles" @hide="handleUserRoles" />
+            </el-form-item>
             <el-form-item label="地址" prop="address">
                 <el-input v-model="formModel.address" type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" maxlength="512" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="备注" prop="description">
                 <el-input v-model="formModel.description" type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" maxlength="512" show-word-limit></el-input>
-            </el-form-item>
-            <el-form-item label="是否启用" prop="isEnabled">
-                <el-switch v-model="formModel.isEnabled" />
             </el-form-item>
         </el-form>
         <template #footer>
@@ -43,20 +46,25 @@ import { addUser, editUser, modifyUserPassword } from '../../api/system-manageme
 import { ElMessage, ElLoading } from 'element-plus';
 import myprompt from '../../utils/myprompt';
 
+const props = defineProps({
+    optionalRoles: Array,
+});
+
 const isAdd = ref(false);
 const visible = ref(false);
 
 const formRef = ref();
-const formModel = ref({
+const formModel = reactive({
     id: '',
     name: '',
     displayName: '',
     password: '',
     phoneNumber: '',
     email: '',
+    roleIds: [],
+    isEnabled: true,
     address: '',
     description: '',
-    isEnabled: true,
 });
 
 const passwordRule = {
@@ -86,6 +94,24 @@ const rules = reactive({
         },
         passwordRule,
     ],
+    phoneNumber: [
+        {
+            required: true,
+            trigger: 'blur',
+            message: '请填写电话号码',
+        },
+        {
+            pattern: /^(1)\d{10}$/,
+            message: '电话号码必须为11位',
+        },
+    ],
+    roleIds: [
+        {
+            required: true,
+            trigger: 'blur',
+            message: '请为用户分配角色',
+        },
+    ],
 });
 
 const emit = defineEmits(['submit']);
@@ -99,7 +125,7 @@ const submitForm = async () => {
             background: 'rgba(0, 0, 0, 0.7)',
         });
 
-        const params = { ...formModel.value, passwordHash: btoa(formModel.value.password) };
+        const params = { ...formModel, passwordHash: btoa(formModel.password) };
 
         try {
             isAdd.value ? await addUser(params) : await editUser(params);
@@ -123,8 +149,9 @@ const show = (editModel) => {
     } else {
         isAdd.value = false;
         visible.value = true;
+        // 避免覆盖默认值使 resetFields 失效
         nextTick(() => {
-            formModel.value = { ...editModel };
+            Object.assign(formModel, editModel);
         });
     }
 };
@@ -134,10 +161,19 @@ defineExpose({ show });
 const handleModifyPassword = async () => {
     try {
         const password = await myprompt('请输入新密码', passwordRule.pattern, passwordRule.message);
-        await modifyUserPassword(formModel.value.id, btoa(password));
+        await modifyUserPassword(formModel.id, btoa(password));
         ElMessage.success('修改成功');
     } catch {}
 };
+
+const handleUserRoles = async () => {
+    await userApi.editUserRoles(formModel.id, formModel.roleIds);
+    ElMessage.success('保存成功');
+};
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.role-select {
+    width: 100%;
+}
+</style>

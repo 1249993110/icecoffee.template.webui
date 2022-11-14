@@ -6,7 +6,7 @@
                 <el-button type="danger" @click="handleDeleteBatch" :disabled="deleteBatchDisabled"><MinIcon name="delete" />批量删除</el-button>
             </div>
             <div class="tab-content-header-search">
-                <el-input style="width: 300px" v-model="pagination.keyword" placeholder="请输入搜索内容" clearable @keyup.enter.native="getData"></el-input>
+                <el-input style="width: 300px" v-model="pagination.keyword" placeholder="请输入用户名、昵称或电话号码" clearable @keyup.enter.native="getData"></el-input>
                 <el-button class="search-button" type="primary" @click="getData">
                     <template #icon>
                         <Icon name="search"></Icon>
@@ -15,7 +15,18 @@
             </div>
         </div>
         <div class="tab-content-main">
-            <el-table :data="tableData" v-loading="loading" border stripe height="100%" highlight-current-row @selection-change="handleSelectionChange">
+            <el-table
+                :data="tableData"
+                v-loading="loading"
+                :default-sort="{ prop: pagination.order, order: pagination.desc ? 'descending' : 'ascending' }"
+                @sort-change="handleSortChange"
+                border
+                stripe
+                height="100%"
+                highlight-current-row
+                size="small"
+                @selection-change="handleSelectionChange"
+            >
                 <el-table-column type="expand">
                     <template #default="{ row }">
                         <div class="expand-content">
@@ -29,20 +40,24 @@
                 </el-table-column>
                 <el-table-column type="selection" width="55" />
                 <el-table-column type="index" label="序号" width="55" />
-                <el-table-column prop="name" label="用户名" sortable />
-                <el-table-column prop="displayName" label="昵称" sortable />
-                <el-table-column prop="phoneNumber" label="电话号码" sortable width="128" />
-                <el-table-column prop="email" label="电子邮件" sortable />
-                <el-table-column prop="isEnabled" label="是否启用" width="112">
+                <el-table-column prop="name" label="用户名" sortable="custom" />
+                <el-table-column prop="displayName" label="昵称" sortable="custom" />
+                <el-table-column prop="phoneNumber" label="电话号码" sortable="custom" />
+                <el-table-column prop="email" label="电子邮件" sortable="custom" />
+                <el-table-column label="用户角色" width="250">
                     <template #default="{ row }">
-                        <el-tag :type="row.isEnabled ? 'success' : 'danger'">{{ row.isEnabled ? '是' : '否' }}</el-tag>
+                        <RoleSelector class="role-select" v-model="row.roleIds" :options="optionalRoles" @hide="handleUserRoles(row.id, row.roleIds)" />
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="320">
+                <el-table-column prop="isEnabled" label="是否启用" width="110">
+                    <template #default="{ row }">
+                        <el-switch v-model="row.isEnabled" @change="handleEnabled(row.id, row.isEnabled)"></el-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="220" fixed="right">
                     <template #default="{ row }">
                         <el-button size="small" type="primary" @click="handleEdit(row)"><MinIcon name="edit-outline" />编辑</el-button>
                         <el-button size="small" type="danger" @click="handleDelete(row)"><MinIcon name="delete" />删除</el-button>
-                        <el-button size="small" color="#626aef" style="color: white" @click="handleAssociateRole(row)">关联角色</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -60,8 +75,7 @@
             >
             </el-pagination>
         </div>
-        <AddOrEditUser ref="addOrEditUserRef" @submit="getData" />
-        <AssociateRole ref="associateRoleRef" />
+        <AddOrEditUser ref="addOrEditUserRef" :optionalRoles="optionalRoles" @submit="getData" />
     </div>
 </template>
 
@@ -72,12 +86,26 @@ export default {
 </script>
 
 <script setup>
-import * as api from '../../api/system-management/users.js';
+import * as userApi from '../../api/system-management/users';
 import { ElMessage } from 'element-plus';
 import myconfirm from '../../utils/myconfirm.js';
+import { getRoles } from '../../api/system-management/roles';
+
+const optionalRoles = ref([]);
+getRoles().then((roles) => {
+    const result = [];
+    for (let i = 0, len = roles.length; i < len; i++) {
+        result.push({
+            label: roles[i].name,
+            value: roles[i].id,
+            disabled: roles[i].isEnabled,
+        });
+    }
+
+    optionalRoles.value = result;
+});
 
 const deleteBatchDisabled = ref(true);
-
 let multipleSelection = [];
 const handleSelectionChange = (val) => {
     multipleSelection = val;
@@ -85,7 +113,6 @@ const handleSelectionChange = (val) => {
 };
 
 const addOrEditUserRef = ref();
-const associateRoleRef = ref();
 const loading = ref(false);
 const tableData = ref([]);
 
@@ -94,6 +121,8 @@ const pagination = reactive({
     pageSize: 20,
     total: 0,
     keyword: '',
+    order: 'name',
+    desc: false,
 });
 
 const getData = async () => {
@@ -102,12 +131,12 @@ const getData = async () => {
         const params = {
             pageIndex: pagination.currentPage,
             pageSize: pagination.pageSize,
-            keyword: pagination.keyword,
-            order: '',
-            desc: true,
+            keyword: pagination.keyword.trim(),
+            order: pagination.order.charAt(0).toUpperCase() + pagination.order.slice(1),
+            desc: pagination.desc,
         };
 
-        const data = await api.getUsers(params);
+        const data = await userApi.getUsers(params);
         tableData.value = data.items;
         pagination.total = data.total;
     } finally {
@@ -122,7 +151,7 @@ const handleEdit = (row) => {
 };
 const handleDelete = async (row) => {
     if (await myconfirm('您确定删除选中的用户吗?')) {
-        await api.deleteUser(row.id);
+        await userApi.deleteUser(row.id);
         ElMessage.success('删除成功');
         await getData();
     }
@@ -135,14 +164,26 @@ const handleAddUser = () => {
 const handleDeleteBatch = async () => {
     if (await myconfirm('您确定删除选中的用户吗?')) {
         const userIds = multipleSelection.map((item) => item.id);
-        await api.deleteUsers(userIds);
+        await userApi.deleteUsers(userIds);
         ElMessage.success('删除成功');
         await getData();
     }
 };
 
-const handleAssociateRole = (row) => {
-    associateRoleRef.value.show(row.id);
+const handleSortChange = async ({ column, prop, order }) => {
+    pagination.order = prop;
+    pagination.desc = order === 'descending';
+    await getData();
+};
+
+const handleEnabled = async (userId, isEnabled) => {
+    await userApi.editUserEnabled(userId, isEnabled);
+    ElMessage.success('保存成功');
+};
+
+const handleUserRoles = async (userId, roleIds) => {
+    await userApi.editUserRoles(userId, roleIds);
+    ElMessage.success('保存成功');
 };
 </script>
 
@@ -153,6 +194,10 @@ const handleAssociateRole = (row) => {
     }
     .search-button {
         margin-left: 4px;
+    }
+
+    .role-select {
+        width: 220px;
     }
 }
 </style>

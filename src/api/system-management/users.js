@@ -27,5 +27,17 @@ export const deleteUsers = async (userIds) => {
 };
 
 export const modifyUserPassword = async (userId, passwordHash) => {
-    return await http.put(`/SystemManagement/Users/${userId}`, { passwordHash: passwordHash });
+    return await http.put(`/SystemManagement/Users/${userId}/Password`, passwordHash, { headers: { 'Content-Type': 'application/json' } });
+};
+
+export const getUserRoles = async (userId) => {
+    return await http.get(`/SystemManagement/Users/${userId}/Roles`);
+};
+
+export const editUserRoles = async (userId, roleIds) => {
+    return await http.put(`/SystemManagement/Users/${userId}/Roles`, roleIds);
+};
+
+export const editUserEnabled = async (userId, isEnabled) => {
+    return await http.put(`/SystemManagement/Users/${userId}/Enabled`, isEnabled ? 'true' : 'false', { headers: { 'Content-Type': 'application/json' } });
 };
