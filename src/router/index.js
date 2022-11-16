@@ -75,7 +75,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from) => {
-    console.log(to, from);
+    // console.log(to, from);
     nProgress.start();
 
     const userInfoStore = useUserInfoStore();

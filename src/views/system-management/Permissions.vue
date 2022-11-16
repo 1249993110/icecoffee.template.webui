@@ -36,7 +36,7 @@
                             编辑
                         </el-button>
                         <el-button size="small" type="danger" @click="handleDelete(row)">
-                            <template #icon> <Icon name="delete" /> </template>删除
+                            <template #icon><Icon name="delete" /></template>删除
                         </el-button>
                     </template>
                 </el-table-column>

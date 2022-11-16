@@ -1,6 +1,6 @@
 <template>
     <el-dialog :title="isAdd ? '新增权限' : '编辑权限'" v-model="visible" width="600px" :close-on-click-modal="false" @closed="handleClosed">
-        <el-form ref="formRef" :model="formModel" status-icon :rules="rules" label-width="120px">
+        <el-form ref="formRef" :model="formModel" status-icon :rules="rules" label-width="100px">
             <el-form-item label="区域" prop="area">
                 <el-input v-model="formModel.area"></el-input>
             </el-form-item>
@@ -8,7 +8,7 @@
                 <el-switch v-model="formModel.isEnabled" />
             </el-form-item>
             <el-form-item label="备注" prop="description">
-                <el-input v-model="formModel.description"></el-input>
+                <el-input v-model="formModel.description" type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" maxlength="512" show-word-limit></el-input>
             </el-form-item>
         </el-form>
         <template #footer>

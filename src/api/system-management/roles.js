@@ -39,3 +39,7 @@ export const getRolePermissions = async (roleId) => {
 export const editRolePermissions = async (roleId, permissionIds) => {
     return await http.put(`/SystemManagement/Roles/${roleId}/Permissions`, permissionIds);
 };
+
+export const editRoleEnabled = async (roleId, isEnabled) => {
+    return await http.put(`/SystemManagement/Roles/${roleId}/Enabled`, isEnabled ? 'true' : 'false', { headers: { 'Content-Type': 'application/json' } });
+};

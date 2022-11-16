@@ -1,6 +1,6 @@
 <template>
     <el-dialog :title="isAdd ? '新增用户' : '编辑用户'" v-model="visible" width="600px" :close-on-click-modal="false" @closed="handleClosed">
-        <el-form ref="formRef" :model="formModel" status-icon :rules="rules" label-width="120px">
+        <el-form ref="formRef" :model="formModel" status-icon :rules="rules" label-width="100px">
             <el-form-item label="用户名" prop="name">
                 <el-input v-model="formModel.name" clearable></el-input>
             </el-form-item>
