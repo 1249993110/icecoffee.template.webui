@@ -1,8 +1,11 @@
 <template>
-    <el-dialog :title="isAdd ? '新增权限' : '编辑权限'" v-model="visible" width="600px">
+    <el-dialog :title="isAdd ? '新增权限' : '编辑权限'" v-model="visible" width="600px" :close-on-click-modal="false" @closed="handleClosed">
         <el-form ref="formRef" :model="formModel" status-icon :rules="rules" label-width="120px">
             <el-form-item label="区域" prop="area">
                 <el-input v-model="formModel.area"></el-input>
+            </el-form-item>
+            <el-form-item label="是否启用" prop="isEnabled">
+                <el-switch v-model="formModel.isEnabled" />
             </el-form-item>
             <el-form-item label="备注" prop="description">
                 <el-input v-model="formModel.description"></el-input>
@@ -26,10 +29,10 @@ const visible = ref(false);
 const isAdd = ref(false);
 
 const formRef = ref();
-
-const formModel = ref({
+const formModel = reactive({
     id: '',
     area: '',
+    isEnabled: true,
     description: '',
 });
 
@@ -40,8 +43,12 @@ const rules = reactive({
             trigger: 'blur',
             message: '请填写区域',
         },
-    ]
+    ],
 });
+
+const handleClosed = () => {
+    formRef.value.resetFields();
+};
 
 const submitForm = async () => {
     await formRef.value.validate(async (valid) => {
@@ -53,40 +60,28 @@ const submitForm = async () => {
         });
 
         const params = {
-            ...formModel.value,
+            ...formModel,
         };
-        if (isAdd.value) {
-            try {
-                await addPermission(params);
-                ElMessage.success('保存成功');
-                visible.value = false;
-                emit('submit');
-            } finally {
-                loading.close();
-            }
-        } else {
-            try {
-                await editPermission(params);
-                ElMessage.success('保存成功');
-                visible.value = false;
-                emit('submit');
-            } finally {
-                loading.close();
-            }
+        try {
+            isAdd.value ? await addPermission(params) : await editPermission(params);
+            ElMessage.success('保存成功');
+            visible.value = false;
+            emit('submit');
+        } finally {
+            loading.close();
         }
     });
 };
 
 const show = (editModel) => {
-    if (editModel == null) {
+    if (!editModel) {
         isAdd.value = true;
-        formRef.value?.resetFields();
         visible.value = true;
     } else {
         isAdd.value = false;
         visible.value = true;
         nextTick(() => {
-            formModel.value = { ...editModel };
+            Object.assign(formModel, editModel);
         });
     }
 };

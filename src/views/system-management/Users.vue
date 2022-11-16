@@ -2,11 +2,11 @@
     <div class="users">
         <div class="search-box">
             <span class="label">用户角色</span>
-            <RoleSelector class="role-select" v-model="pagination.roleIds" :options="optionalRoles" />
+            <RoleSelector class="role-select" v-model="queryParams.roleIds" :options="optionalRoles" />
             <span class="label">是否启用</span>
-            <EnabledSelector v-model="pagination.enabledState" />
+            <EnabledSelector v-model="queryParams.enabledState" />
             <span class="label">关键词</span>
-            <el-input class="keyword" v-model="pagination.keyword" placeholder="请输入用户名、昵称或电话号码" clearable @keyup.enter.native="getData"> </el-input>
+            <el-input class="keyword" v-model="queryParams.keyword" placeholder="请输入用户名、昵称或电话号码" clearable @keyup.enter.native="getData"> </el-input>
             <el-button type="primary" @click="getData">
                 <template #icon>
                     <Icon name="search"></Icon>
@@ -23,7 +23,7 @@
         <div class="table-box">
             <div class="operation">
                 <div>
-                    <el-button type="primary" @click="handleAddUser">
+                    <el-button type="primary" @click="handleAdd">
                         <template #icon>
                             <Icon name="add" />
                         </template>
@@ -40,7 +40,7 @@
             <el-table
                 :data="tableData"
                 v-loading="loading"
-                :default-sort="{ prop: pagination.order, order: pagination.desc ? 'descending' : 'ascending' }"
+                :default-sort="{ prop: queryParams.order, order: queryParams.desc ? 'descending' : 'ascending' }"
                 @sort-change="handleSortChange"
                 stripe
                 highlight-current-row
@@ -58,18 +58,18 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column type="selection" width="55" />
+                <el-table-column type="selection" width="50" align="center" />
                 <el-table-column type="index" label="序号" width="60" />
                 <el-table-column prop="name" label="用户名" sortable="custom" />
                 <el-table-column prop="displayName" label="昵称" sortable="custom" />
                 <el-table-column prop="phoneNumber" label="电话号码" sortable="custom" />
                 <el-table-column prop="email" label="电子邮件" sortable="custom" />
-                <el-table-column label="用户角色" width="255">
+                <el-table-column label="用户角色" width="260">
                     <template #default="{ row }">
                         <RoleSelector class="role-select" v-model="row.roleIds" :options="optionalRoles" @hide="handleUserRoles(row.id, row.roleIds)" />
                     </template>
                 </el-table-column>
-                <el-table-column prop="isEnabled" label="是否启用" width="110">
+                <el-table-column prop="isEnabled" label="是否启用" width="120">
                     <template #default="{ row }">
                         <el-switch v-model="row.isEnabled" @change="handleEnabled(row.id, row.isEnabled)"></el-switch>
                     </template>
@@ -152,6 +152,9 @@ const pagination = reactive({
     currentPage: 1,
     pageSize: 20,
     total: 0,
+});
+
+const queryParams = reactive({
     keyword: '',
     order: 'name',
     desc: false,
@@ -165,11 +168,11 @@ const getData = async () => {
         const params = {
             pageIndex: pagination.currentPage,
             pageSize: pagination.pageSize,
-            keyword: pagination.keyword.trim(),
-            order: pagination.order.charAt(0).toUpperCase() + pagination.order.slice(1),
-            desc: pagination.desc,
-            roleIds: pagination.roleIds,
-            isEnabled: pagination.enabledState,
+            keyword: queryParams.keyword.trim(),
+            order: queryParams.order.charAt(0).toUpperCase() + queryParams.order.slice(1),
+            desc: queryParams.desc,
+            roleIds: queryParams.roleIds,
+            isEnabled: queryParams.enabledState,
         };
 
         const data = await userApi.getUsers(params);
@@ -185,15 +188,15 @@ getData();
 const handleEdit = (row) => {
     addOrEditUserRef.value.show(row);
 };
-const handleDelete = async (row) => {
+const handleDelete = async ({ id }) => {
     if (await myconfirm('您确定删除选中的用户吗?')) {
-        await userApi.deleteUser(row.id);
+        await userApi.deleteUser(id);
         ElMessage.success('删除成功');
         await getData();
     }
 };
 
-const handleAddUser = () => {
+const handleAdd = () => {
     addOrEditUserRef.value.show();
 };
 
@@ -206,9 +209,9 @@ const handleDeleteBatch = async () => {
     }
 };
 
-const handleSortChange = async ({ column, prop, order }) => {
-    pagination.order = prop;
-    pagination.desc = order === 'descending';
+const handleSortChange = async ({ prop, order }) => {
+    queryParams.order = prop;
+    queryParams.desc = order === 'descending';
     await getData();
 };
 
@@ -224,9 +227,9 @@ const handleUserRoles = async (userId, roleIds) => {
 
 const tableSize = ref('small');
 const reset = () => {
-    pagination.roleIds = [];
-    pagination.enabledState = null;
-    pagination.keyword = '';
+    queryParams.roleIds = [];
+    queryParams.enabledState = null;
+    queryParams.keyword = '';
 };
 </script>
 

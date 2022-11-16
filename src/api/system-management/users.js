@@ -4,9 +4,9 @@ export const getUser = async (userId) => {
     return await http.get('/SystemManagement/Users/' + userId);
 };
 
-export const getUsers = async (paginationQueryParams) => {
+export const getUsers = async (queryParams) => {
     return await http.get('/SystemManagement/Users', {
-        params: paginationQueryParams,
+        params: queryParams,
     });
 };
 

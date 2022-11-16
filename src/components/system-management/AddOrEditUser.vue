@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :title="isAdd ? '新增用户' : '编辑用户'" v-model="visible" width="618px" :close-on-click-modal="false" @closed="handleClosed">
+    <el-dialog :title="isAdd ? '新增用户' : '编辑用户'" v-model="visible" width="600px" :close-on-click-modal="false" @closed="handleClosed">
         <el-form ref="formRef" :model="formModel" status-icon :rules="rules" label-width="120px">
             <el-form-item label="用户名" prop="name">
                 <el-input v-model="formModel.name" clearable></el-input>
@@ -23,7 +23,7 @@
                 <el-switch v-model="formModel.isEnabled" />
             </el-form-item>
             <el-form-item label="用户角色" prop="roleIds">
-                <RoleSelector class="role-select" v-model="formModel.roleIds" :options="optionalRoles" @hide="handleUserRoles" />
+                <RoleSelector class="role-select" v-model="formModel.roleIds" :options="optionalRoles" />
             </el-form-item>
             <el-form-item label="地址" prop="address">
                 <el-input v-model="formModel.address" type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" maxlength="512" show-word-limit></el-input>
@@ -166,10 +166,6 @@ const handleModifyPassword = async () => {
     } catch {}
 };
 
-const handleUserRoles = async () => {
-    await userApi.editUserRoles(formModel.id, formModel.roleIds);
-    ElMessage.success('保存成功');
-};
 </script>
 
 <style scoped lang="scss">
