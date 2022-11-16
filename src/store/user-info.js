@@ -28,6 +28,7 @@ export const useUserInfoStore = defineStore('user-info', {
                 this.setUserInfo(data);
                 return true;
             } catch (error) {
+                console.error(error);
                 return false;
             }
         },

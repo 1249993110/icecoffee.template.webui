@@ -52,18 +52,25 @@ const sidebarWidth = computed(() => (sidebarStore.isCollapse ? '64px' : '200px')
         box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
     }
     .el-main {
-        --el-main-padding: 6px;
+        padding: 4px;
+        background-color: #f0f2f5;
+        :deep(.el-tabs) {
+            .el-tabs__header {
+                margin: 0;
+                background-color: #fff;
+            }
+        }
     }
+    .el-footer{
+        background-color: #f0f2f5;
+    }
+
     .under-header {
         height: calc(100% - 48px);
 
         .aside {
             transition: 0.5s;
             overflow-x: hidden;
-        }
-
-        .router-view {
-            height: calc(100% - 56px);
         }
     }
 }

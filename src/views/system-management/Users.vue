@@ -1,30 +1,50 @@
 <template>
-    <div class="tab-content">
-        <div class="tab-content-header">
-            <div>
-                <el-button type="primary" @click="handleAddUser"><MinIcon name="add" />新增用户</el-button>
-                <el-button type="danger" @click="handleDeleteBatch" :disabled="deleteBatchDisabled"><MinIcon name="delete" />批量删除</el-button>
-            </div>
-            <div class="tab-content-header-search">
-                <el-input style="width: 300px" v-model="pagination.keyword" placeholder="请输入用户名、昵称或电话号码" clearable @keyup.enter.native="getData"></el-input>
-                <el-button class="search-button" type="primary" @click="getData">
-                    <template #icon>
-                        <Icon name="search"></Icon>
-                    </template>
-                </el-button>
-            </div>
+    <div class="users">
+        <div class="search-box">
+            <span class="label">用户角色</span>
+            <RoleSelector class="role-select" v-model="pagination.roleIds" :options="optionalRoles" />
+            <span class="label">是否启用</span>
+            <EnabledSelector v-model="pagination.enabledState" />
+            <span class="label">关键词</span>
+            <el-input class="keyword" v-model="pagination.keyword" placeholder="请输入用户名、昵称或电话号码" clearable @keyup.enter.native="getData"> </el-input>
+            <el-button type="primary" @click="getData">
+                <template #icon>
+                    <Icon name="search"></Icon>
+                </template>
+                查询
+            </el-button>
+            <el-button @click="reset">
+                <template #icon>
+                    <Icon name="refresh1"></Icon>
+                </template>
+                重置
+            </el-button>
         </div>
-        <div class="tab-content-main">
+        <div class="table-box">
+            <div class="operation">
+                <div>
+                    <el-button type="primary" @click="handleAddUser">
+                        <template #icon>
+                            <Icon name="add" />
+                        </template>
+                        新增
+                    </el-button>
+                    <el-button type="danger" @click="handleDeleteBatch" :disabled="deleteBatchDisabled">
+                        <template #icon>
+                            <Icon name="delete" />
+                        </template>
+                        删除
+                    </el-button>
+                </div>
+            </div>
             <el-table
                 :data="tableData"
                 v-loading="loading"
                 :default-sort="{ prop: pagination.order, order: pagination.desc ? 'descending' : 'ascending' }"
                 @sort-change="handleSortChange"
-                border
                 stripe
-                height="100%"
                 highlight-current-row
-                size="small"
+                :size="tableSize"
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="expand">
@@ -39,12 +59,12 @@
                     </template>
                 </el-table-column>
                 <el-table-column type="selection" width="55" />
-                <el-table-column type="index" label="序号" width="55" />
+                <el-table-column type="index" label="序号" width="60" />
                 <el-table-column prop="name" label="用户名" sortable="custom" />
                 <el-table-column prop="displayName" label="昵称" sortable="custom" />
                 <el-table-column prop="phoneNumber" label="电话号码" sortable="custom" />
                 <el-table-column prop="email" label="电子邮件" sortable="custom" />
-                <el-table-column label="用户角色" width="250">
+                <el-table-column label="用户角色" width="255">
                     <template #default="{ row }">
                         <RoleSelector class="role-select" v-model="row.roleIds" :options="optionalRoles" @hide="handleUserRoles(row.id, row.roleIds)" />
                     </template>
@@ -56,24 +76,36 @@
                 </el-table-column>
                 <el-table-column label="操作" width="220" fixed="right">
                     <template #default="{ row }">
-                        <el-button size="small" type="primary" @click="handleEdit(row)"><MinIcon name="edit-outline" />编辑</el-button>
-                        <el-button size="small" type="danger" @click="handleDelete(row)"><MinIcon name="delete" />删除</el-button>
+                        <el-button size="small" type="primary" @click="handleEdit(row)">
+                            <template #icon>
+                                <Icon name="edit-outline" />
+                            </template>
+                            编辑
+                        </el-button>
+                        <el-button size="small" type="danger" @click="handleDelete(row)">
+                            <template #icon> <Icon name="delete" /> </template>删除
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
-        </div>
-        <div class="tab-content-footer">
-            <el-pagination
-                background
-                @size-change="getData"
-                @current-change="getData"
-                :page-sizes="[10, 20, 50, 100]"
-                v-model:current-page="pagination.currentPage"
-                v-model:page-size="pagination.pageSize"
-                :total="pagination.total"
-                layout="total, sizes, prev, pager, next, jumper"
-            >
-            </el-pagination>
+            <div class="operation">
+                <el-pagination
+                    background
+                    @size-change="getData"
+                    @current-change="getData"
+                    :page-sizes="[10, 20, 50, 100]"
+                    v-model:current-page="pagination.currentPage"
+                    v-model:page-size="pagination.pageSize"
+                    :total="pagination.total"
+                    layout="total, sizes, prev, pager, next, jumper"
+                >
+                </el-pagination>
+                <el-radio-group v-model="tableSize">
+                    <el-radio label="small" size="small">小</el-radio>
+                    <el-radio label="default" size="default">中</el-radio>
+                    <el-radio label="large" size="large">大</el-radio>
+                </el-radio-group>
+            </div>
         </div>
         <AddOrEditUser ref="addOrEditUserRef" :optionalRoles="optionalRoles" @submit="getData" />
     </div>
@@ -123,6 +155,8 @@ const pagination = reactive({
     keyword: '',
     order: 'name',
     desc: false,
+    roleIds: [],
+    enabledState: null,
 });
 
 const getData = async () => {
@@ -134,6 +168,8 @@ const getData = async () => {
             keyword: pagination.keyword.trim(),
             order: pagination.order.charAt(0).toUpperCase() + pagination.order.slice(1),
             desc: pagination.desc,
+            roleIds: pagination.roleIds,
+            isEnabled: pagination.enabledState,
         };
 
         const data = await userApi.getUsers(params);
@@ -185,15 +221,21 @@ const handleUserRoles = async (userId, roleIds) => {
     await userApi.editUserRoles(userId, roleIds);
     ElMessage.success('保存成功');
 };
+
+const tableSize = ref('small');
+const reset = () => {
+    pagination.roleIds = [];
+    pagination.enabledState = null;
+    pagination.keyword = '';
+};
 </script>
 
 <style scoped lang="scss">
-.tab-content {
+.users {
+    height: 100%;
+
     .expand-content {
         padding: 0 48px;
-    }
-    .search-button {
-        margin-left: 4px;
     }
 
     .role-select {

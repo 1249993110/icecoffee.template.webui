@@ -2,10 +2,16 @@ import axios from 'axios';
 import nProgress from '../plugins/nprogress';
 import { ElMessage } from 'element-plus';
 import router from '../router';
+import qs from 'qs';
 
 const service = axios.create({
     baseURL: import.meta.env.VITE_APP_API_BASE_URL,
     timeout: import.meta.env.VITE_APP_API_TIMEOUT,
+    paramsSerializer: {
+        serialize: function (params) {
+            return qs.stringify(params, { arrayFormat: 'repeat' });
+        },
+    },
 });
 
 service.interceptors.request.use(
