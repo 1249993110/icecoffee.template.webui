@@ -18,7 +18,7 @@ const getNumber = (bool) => {
         case false:
             return 2;
         default:
-            console.error(`modelValue can not be ${bool}, must be null or true or false!`);
+            console.debug(`modelValue can not be ${bool}, must be null or true or false!`);
     }
 };
 

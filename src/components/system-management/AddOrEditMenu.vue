@@ -1,14 +1,14 @@
 <template>
-    <el-dialog :title="isAdd ? '新增菜单' : '编辑菜单'" v-model="visible" width="600px">
-        <el-form ref="formRef" :model="formModel" status-icon :rules="rules" label-width="120px">
+    <el-dialog :title="isAdd ? '新增菜单' : '编辑菜单'" v-model="visible" width="600px" :close-on-click-modal="false" @closed="handleClosed">
+        <el-form ref="formRef" :model="formModel" status-icon :rules="rules" label-width="100px">
             <el-form-item label="菜单名称" prop="name">
                 <el-input v-model="formModel.name"></el-input>
             </el-form-item>
             <el-form-item label="上级菜单" prop="parentId">
-                <el-cascader v-model="formModel.parentId" :options="parentMenus" :props="cascaderProps" ref="cascaderRef" clearable />
+                <el-cascader v-model="formModel.parentId" :options="menus" :props="cascaderProps" clearable placeholder="根目录" style="width: 100%" />
             </el-form-item>
             <el-form-item label="排序" prop="sort">
-                <el-input v-model="formModel.sort"></el-input>
+                <el-input-number v-model="formModel.sort"></el-input-number>
             </el-form-item>
             <el-form-item label="图标" prop="icon">
                 <el-input v-model="formModel.icon"></el-input>
@@ -16,14 +16,14 @@
             <el-form-item label="地址" prop="url">
                 <el-input v-model="formModel.url"></el-input>
             </el-form-item>
-            <el-form-item label="备注" prop="description">
-                <el-input v-model="formModel.description"></el-input>
+            <el-form-item label="是否启用" prop="isEnabled">
+                <el-switch v-model="formModel.isEnabled" />
             </el-form-item>
             <el-form-item label="是否为外链" prop="isExternalLink">
                 <el-switch v-model="formModel.isExternalLink" />
             </el-form-item>
-            <el-form-item label="是否启用" prop="isEnabled">
-                <el-switch v-model="formModel.isEnabled" />
+            <el-form-item label="备注" prop="description">
+                <el-input v-model="formModel.description" type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" maxlength="512" show-word-limit></el-input>
             </el-form-item>
         </el-form>
         <template #footer>
@@ -38,23 +38,17 @@
 <script setup>
 import { addMenu, editMenu } from '../../api/system-management/menus';
 import { ElMessage, ElLoading } from 'element-plus';
-import { getMenus } from '../../api/system-management/menus.js';
 
-onBeforeMount(async () => {
-    try {
-        const data = await getMenus();
-        foreachTree(data, formModel.value.id);
-        parentMenus.value = data;
-    } catch {}
+const props = defineProps({
+    menus: Array,
 });
-
-const parentMenus = ref([]);
-const cascaderRef = ref();
 
 const cascaderProps = {
     checkStrictly: true,
     value: 'id',
     label: 'name',
+    emitPath: false,
+    expandTrigger: 'hover',
 };
 
 const emit = defineEmits(['submit']);
@@ -62,11 +56,10 @@ const visible = ref(false);
 const isAdd = ref(false);
 
 const formRef = ref();
-
-const formModel = ref({
+const formModel = reactive({
     id: '',
     name: '',
-    parentId: [],
+    parentId: null,
     sort: 0,
     icon: '',
     url: '',
@@ -75,33 +68,16 @@ const formModel = ref({
     isExternalLink: false,
 });
 
-const foreachTree = (data, id) => {
-    for (let index = 0; index < data.length; index++) {
-        const element = data[index];
-        if (element.id == id) {
-            element.disabled = true;
-            if (element.children && element.children.length > 0) {
-                element.children.forEach((item) => {
-                    item.disabled = true;
-                });
-            }
-        } else {
-            element.disabled = false;
-            if (element.children && element.children.length > 0) {
-                foreachTree(element.children, id);
-            }
+const foreachMenu = (menus, selfId, disabled) => {
+    for (let index = 0; index < menus.length; index++) {
+        const menu = menus[index];
+        menu.disabled = disabled || menu.id === selfId;
+        if (menu.children && menu.children.length > 0) {
+            // 递归所有子菜单
+            foreachMenu(menu.children, selfId, menu.disabled);
         }
     }
 };
-
-watch(
-    () => formModel.value.id,
-    (id) => {
-        if (!!id) {
-            foreachTree(parentMenus.value, formModel.value.id);
-        }
-    }
-);
 
 const rules = reactive({
     name: [
@@ -110,7 +86,7 @@ const rules = reactive({
             trigger: 'blur',
             message: '请填写菜单名称',
         },
-    ]
+    ],
 });
 
 const submitForm = async () => {
@@ -124,48 +100,35 @@ const submitForm = async () => {
         });
 
         const params = {
-            ...formModel.value,
+            ...formModel,
         };
 
-        const checkedNodes = cascaderRef.value.getCheckedNodes();
-        if (checkedNodes.length > 0) {
-            params.parentId = checkedNodes[checkedNodes.length - 1].value;
-        } else {
-            params.parentId = null;
-        }
-
-        if (isAdd.value) {
-            try {
-                await addMenu(params);
-                ElMessage.success('保存成功');
-                visible.value = false;
-                emit('submit');
-            } finally {
-                loading.close();
-            }
-        } else {
-            try {
-                await editMenu(params);
-                ElMessage.success('保存成功');
-                visible.value = false;
-                emit('submit');
-            } finally {
-                loading.close();
-            }
+        try {
+            isAdd.value ? await addMenu(params) : await editMenu(params);
+            ElMessage.success('保存成功');
+            visible.value = false;
+            emit('submit');
+        } finally {
+            loading.close();
         }
     });
 };
 
+const handleClosed = () => {
+    foreachMenu(props.menus);
+    formRef.value.resetFields();
+};
+
 const show = (editModel) => {
-    if (editModel == null) {
+    if (!editModel) {
         isAdd.value = true;
-        formRef.value?.resetFields();
         visible.value = true;
     } else {
         isAdd.value = false;
         visible.value = true;
+        foreachMenu(props.menus, editModel.id);
         nextTick(() => {
-            formModel.value = { ...editModel };
+            Object.assign(formModel, editModel);
         });
     }
 };

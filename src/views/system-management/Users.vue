@@ -44,7 +44,7 @@
                 @sort-change="handleSortChange"
                 stripe
                 highlight-current-row
-                :size="tableSize"
+                :size="appSettingsStore.tableSize"
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="expand">
@@ -69,7 +69,7 @@
                         <RoleSelector class="role-select" v-model="row.roleIds" :options="optionalRoles" @hide="handleUserRoles(row.id, row.roleIds)" />
                     </template>
                 </el-table-column>
-                <el-table-column prop="isEnabled" label="是否启用" width="120">
+                <el-table-column label="是否启用" width="120">
                     <template #default="{ row }">
                         <el-switch v-model="row.isEnabled" @change="handleEnabled(row.id, row.isEnabled)"></el-switch>
                     </template>
@@ -100,7 +100,7 @@
                     layout="total, sizes, prev, pager, next, jumper"
                 >
                 </el-pagination>
-                <el-radio-group v-model="tableSize">
+                <el-radio-group v-model="appSettingsStore.tableSize">
                     <el-radio label="small" size="small">小</el-radio>
                     <el-radio label="default" size="default">中</el-radio>
                     <el-radio label="large" size="large">大</el-radio>
@@ -120,8 +120,11 @@ export default {
 <script setup>
 import * as userApi from '../../api/system-management/users';
 import { ElMessage } from 'element-plus';
-import myconfirm from '../../utils/myconfirm.js';
+import myconfirm from '../../utils/myconfirm';
 import { getRoles } from '../../api/system-management/roles';
+import { useAppSettingsStore } from '../../store/app-settings';
+
+const appSettingsStore = useAppSettingsStore();
 
 const optionalRoles = ref([]);
 getRoles().then((roles) => {
@@ -225,7 +228,6 @@ const handleUserRoles = async (userId, roleIds) => {
     ElMessage.success('保存成功');
 };
 
-const tableSize = ref('small');
 const reset = () => {
     queryParams.roleIds = [];
     queryParams.enabledState = null;

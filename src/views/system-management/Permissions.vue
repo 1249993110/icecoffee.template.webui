@@ -17,16 +17,16 @@
                     </el-button>
                 </div>
             </div>
-            <el-table :data="tableData" v-loading="loading" stripe highlight-current-row :size="tableSize" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" v-loading="loading" stripe highlight-current-row :size="appSettingsStore.tableSize" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="50" align="center" />
                 <el-table-column type="index" label="序号" width="60" />
                 <el-table-column prop="area" label="区域" width="300" sortable />
-                <el-table-column prop="isEnabled" label="是否启用" sortable width="120">
+                <el-table-column label="是否启用" sortable width="120">
                     <template #default="{ row }">
                         <el-switch v-model="row.isEnabled" @change="handleEnabled(row.id, row.isEnabled)"></el-switch>
                     </template>
                 </el-table-column>
-                <el-table-column prop="description" label="备注" />
+                <el-table-column prop="description" label="备注" show-overflow-tooltip />
                 <el-table-column label="操作" width="220" fixed="right">
                     <template #default="{ row }">
                         <el-button size="small" type="primary" @click="handleEdit(row)">
@@ -42,7 +42,7 @@
                 </el-table-column>
             </el-table>
             <div class="operation">
-                <el-radio-group v-model="tableSize">
+                <el-radio-group v-model="appSettingsStore.tableSize">
                     <el-radio label="small" size="small">小</el-radio>
                     <el-radio label="default" size="default">中</el-radio>
                     <el-radio label="large" size="large">大</el-radio>
@@ -60,11 +60,12 @@ export default {
 </script>
 
 <script setup>
-import * as api from '../../api/system-management/permissions.js';
+import * as api from '../../api/system-management/permissions';
 import { ElMessage } from 'element-plus';
-import myconfirm from '../../utils/myconfirm.js';
+import myconfirm from '../../utils/myconfirm';
+import { useAppSettingsStore } from '../../store/app-settings';
 
-const tableSize = ref('small');
+const appSettingsStore = useAppSettingsStore();
 
 const deleteBatchDisabled = ref(true);
 let multipleSelection = [];
