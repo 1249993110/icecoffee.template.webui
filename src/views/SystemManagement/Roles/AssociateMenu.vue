@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { getRoleMenus, editRoleMenus } from '../../api/system-management/roles';
+import { getRoleMenus, editRoleMenus } from '../../../api/system-management/roles';
 import { ElMessage } from 'element-plus';
 
 const props = defineProps({

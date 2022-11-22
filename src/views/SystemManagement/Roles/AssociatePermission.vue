@@ -22,7 +22,7 @@
 
 <script setup>
 import { ElMessage } from 'element-plus';
-import * as api from '../../api/system-management/roles';
+import * as api from '../../../api/system-management/roles';
 
 const props = defineProps({
     permissions: Array,

@@ -107,22 +107,24 @@
                 </el-radio-group>
             </div>
         </div>
-        <AddOrEditUser ref="addOrEditUserRef" :optionalRoles="optionalRoles" @submit="getData" />
+        <AddOrEditUser ref="addOrEditUserRef" :optional-roles="optionalRoles" @submit="getData" />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'system-management-users',
+    name: 'SystemManagement.Users',
 };
 </script>
 
 <script setup>
-import * as userApi from '../../api/system-management/users';
+import * as userApi from '../../../api/system-management/users';
 import { ElMessage } from 'element-plus';
-import myconfirm from '../../utils/myconfirm';
-import { getRoles } from '../../api/system-management/roles';
-import { useAppSettingsStore } from '../../store/app-settings';
+import myconfirm from '../../../utils/myconfirm';
+import { getRoles } from '../../../api/system-management/roles';
+import { useAppSettingsStore } from '../../../store/app-settings';
+import AddOrEditUser from './AddOrEditUser.vue';
+import RoleSelector from './RoleSelector.vue';
 
 const appSettingsStore = useAppSettingsStore();
 

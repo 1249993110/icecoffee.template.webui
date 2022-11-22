@@ -60,15 +60,16 @@
 
 <script>
 export default {
-    name: 'system-management-menus',
+    name: 'SystemManagement.Menus',
 };
 </script>
 
 <script setup>
-import * as api from '../../api/system-management/menus';
+import * as api from '../../../api/system-management/menus';
 import { ElMessage } from 'element-plus';
-import myconfirm from '../../utils/myconfirm';
-import { useAppSettingsStore } from '../../store/app-settings';
+import myconfirm from '../../../utils/myconfirm';
+import { useAppSettingsStore } from '../../../store/app-settings';
+import AddOrEditMenu from './AddOrEditMenu.vue';
 
 const appSettingsStore = useAppSettingsStore();
 

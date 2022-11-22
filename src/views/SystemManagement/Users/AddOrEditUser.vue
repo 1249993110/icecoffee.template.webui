@@ -42,9 +42,10 @@
 </template>
 
 <script setup>
-import { addUser, editUser, modifyUserPassword } from '../../api/system-management/users';
+import { addUser, editUser, modifyUserPassword } from '../../../api/system-management/users';
 import { ElMessage, ElLoading } from 'element-plus';
-import myprompt from '../../utils/myprompt';
+import myprompt from '../../../utils/myprompt';
+import RoleSelector from './RoleSelector.vue';
 
 const props = defineProps({
     optionalRoles: Array,

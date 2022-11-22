@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { addPermission, editPermission } from '../../api/system-management/permissions';
+import { addPermission, editPermission } from '../../../api/system-management/permissions';
 import { ElMessage, ElLoading } from 'element-plus';
 
 const emit = defineEmits(['submit']);

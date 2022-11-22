@@ -37,6 +37,12 @@
     </div>
 </template>
 
+<script>
+export default {
+    name: 'Login',
+};
+</script>
+
 <script setup>
 import { useKeepAliveStore } from '../store/keep-alive';
 import { useUserInfoStore } from '../store/user-info';
@@ -46,9 +52,9 @@ import { ElMessage } from 'element-plus';
 import ImageVerify from '../plugins/image-verify';
 
 const title = import.meta.env.VITE_APP_TITEL;
-const keepAliveStore = useKeepAliveStore();
 const userInfoStore = useUserInfoStore();
 const route = useRoute();
+const router = useRouter();
 
 const formModel = reactive({
     loginName: '',
@@ -95,7 +101,7 @@ const handleLogin = async () => {
             userInfoStore.setUserInfo(data);
 
             ElMessage.success('登录成功');
-            keepAliveStore.addPage(route.query.redirect || '/home');
+            router.push(route.query.redirect || '/home')
         } catch {
             handleRefrenshCaptcha();
         }

@@ -12,7 +12,7 @@ const routes = [
         children: [
             {
                 path: 'home',
-                name: 'home',
+                name: 'Home',
                 component: () => import('../views/Home.vue'),
                 meta: { requiresAuth: true, keepAlive: true },
             },
@@ -24,26 +24,26 @@ const routes = [
         children: [
             {
                 path: 'users',
-                name: 'system-management-users',
-                component: () => import('../views/system-management/Users.vue'),
+                name: 'SystemManagement.Users',
+                component: () => import('../views/SystemManagement/Users/index.vue'),
                 meta: { requiresAuth: true, keepAlive: true },
             },
             {
                 path: 'roles',
-                name: 'system-management-roles',
-                component: () => import('../views/system-management/Roles.vue'),
+                name: 'SystemManagement.Roles',
+                component: () => import('../views/SystemManagement/Roles/index.vue'),
                 meta: { requiresAuth: true, keepAlive: true },
             },
             {
                 path: 'menus',
-                name: 'system-management-menus',
-                component: () => import('../views/system-management/Menus.vue'),
+                name: 'SystemManagement.Menus',
+                component: () => import('../views/SystemManagement/Menus/index.vue'),
                 meta: { requiresAuth: true, keepAlive: true },
             },
             {
                 path: 'permissions',
-                name: 'system-management-permissions',
-                component: () => import('../views/system-management/Permissions.vue'),
+                name: 'SystemManagement.Permissions',
+                component: () => import('../views/SystemManagement/Permissions/index.vue'),
                 meta: { requiresAuth: true, keepAlive: true },
             },
         ],
@@ -79,10 +79,12 @@ router.beforeEach(async (to, from) => {
     nProgress.start();
 
     const userInfoStore = useUserInfoStore();
+    const keepAliveStore = useKeepAliveStore();
 
     // 避免无限重定向
     if (to.path === '/login') {
         userInfoStore.$reset();
+        keepAliveStore.$reset();
         return;
     }
 
@@ -97,9 +99,8 @@ router.beforeEach(async (to, from) => {
         };
     }
 
-    const keepAlive = useKeepAliveStore();
-    if (keepAlive.activePages.length === 0 && to.meta.keepAlive) {
-        keepAlive.addPage(to.path, false);
+    if (keepAliveStore.names.length === 0 && to.meta.keepAlive) {
+        keepAliveStore.add(to.name);
     }
 });
 

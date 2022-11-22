@@ -13,7 +13,7 @@
                     <div class="router-view" v-if="keepAliveStore.isRouterAlive">
                         <router-view v-slot="{ Component }">
                             <transition mode="out-in">
-                                <keep-alive :include="keepAliveStore.includes">
+                                <keep-alive :include="keepAliveStore.names">
                                     <component :is="Component" />
                                 </keep-alive>
                             </transition>

@@ -1,5 +1,5 @@
 <template>
-    <Icon class="icon"></Icon>
+    <Icon class="icon" />
 </template>
 
 <style scoped lang="scss">

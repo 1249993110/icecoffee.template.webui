@@ -33,7 +33,7 @@
 <script setup>
 import { useUserInfoStore } from '../store/user-info';
 import { useKeepAliveStore } from '../store/keep-alive';
-import { useMenusStore } from '../store/menus';
+import { useMenusStore } from '../store/user-menus';
 import myconfirm from '../utils/myconfirm';
 import { signOutWithCookie } from '../api/account';
 import { useSidebarStore } from '../store/sidebar';
@@ -82,7 +82,6 @@ const handleCommand = async (command) => {
         case 'logout':
             await myconfirm('您确定要退出登录吗?');
             await signOutWithCookie();
-            keepAliveStore.activePages = [];
             ElMessage.success('退出成功');
             router.push('/login');
             break;

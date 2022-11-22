@@ -1,8 +1,8 @@
 <template>
-    <el-tabs closable v-model="selectedTab" type="card" @tab-remove="handleRemoveTab">
+    <el-tabs closable v-model="activeName" type="card" @tab-remove="handleTabRemove">
         <el-tab-pane v-for="item in tabs" :key="item.path" :name="item.path">
             <template #label>
-                <Icon class="icon" :name="item.icon"></Icon>
+                <Icon class="icon" :name="item.icon" />
                 <span>{{ item.label }}</span>
             </template>
         </el-tab-pane>
@@ -11,21 +11,23 @@
 
 <script setup>
 import { useKeepAliveStore } from '../store/keep-alive';
-import { useMenusStore } from '../store/menus';
+import { useMenusStore } from '../store/user-menus';
 
 const keepAliveStore = useKeepAliveStore();
 const route = useRoute();
 const router = useRouter();
 const menusStore = useMenusStore();
 
-const selectedTab = computed({
+const activeName = computed({
     get: () => route.path,
     set: (path) => router.push(path),
 });
 
 const tabs = computed(() => {
     const result = [];
-    keepAliveStore.paths.forEach((path) => {
+    const routes = router.getRoutes();
+    keepAliveStore.names.forEach((name) => {
+        const path = routes.find((item) => item.name === name).path;
         const menu = menusStore.getMenuByPath(path);
         if (menu) {
             result.push(menu);
@@ -35,8 +37,10 @@ const tabs = computed(() => {
     return result;
 });
 
-const handleRemoveTab = (path) => {
-    keepAliveStore.removePage(path);
+const handleTabRemove = (path) => {
+    const routes = router.getRoutes();
+    const name = routes.find((item) => item.path === path).name;
+    keepAliveStore.remove(name);
 };
 </script>
 
