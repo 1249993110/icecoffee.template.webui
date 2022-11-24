@@ -1,7 +1,7 @@
 <template>
     <el-dialog title="关联权限" v-model="visible" width="600px" :close-on-click-modal="false" @closed="handleClosed">
         <el-table :data="permissions" size="small" v-loading="loading" border stripe height="300px" highlight-current-row ref="tableRef" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="50" align="center" />
+            <el-table-column type="selection" width="50" align="center" :selectable="selectableFunc" />
             <el-table-column type="index" label="序号" width="60" />
             <el-table-column prop="area" label="区域" width="200" sortable />
             <el-table-column prop="isEnabled" label="是否启用" width="70">
@@ -67,6 +67,11 @@ const submitForm = async () => {
     ElMessage.success('保存成功');
     visible.value = false;
 };
+
+const selectableFunc = (row)=>{
+    console.log(row);
+    return row.isEnabled;
+}
 </script>
 
 <style></style>

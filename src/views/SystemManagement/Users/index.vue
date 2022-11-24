@@ -135,7 +135,7 @@ getRoles().then((roles) => {
         result.push({
             label: roles[i].name,
             value: roles[i].id,
-            disabled: roles[i].isEnabled,
+            disabled: !roles[i].isEnabled,
         });
     }
 
