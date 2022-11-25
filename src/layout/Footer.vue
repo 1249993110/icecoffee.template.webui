@@ -1,6 +1,13 @@
 <template>
-    <p class="footer"><a href="https://github.com/1249993110/icecoffee.template.webui" target="_blank">icecoffee.template.webui 1.0 ™ Copyright © 2022 IceCoffee</a></p>
+    <p class="footer">
+        <a :href="href" target="_blank">{{ text }}</a>
+    </p>
 </template>
+
+<script setup>
+const href = import.meta.env.VITE_APP_FOOTER_HREF;
+const text = import.meta.env.VITE_APP_FOOTER_TEXT;
+</script>
 
 <style scoped lang="scss">
 .footer {
