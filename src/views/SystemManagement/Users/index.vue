@@ -2,7 +2,7 @@
     <div class="users">
         <div class="search-box">
             <span class="label">用户角色</span>
-            <RoleSelector class="role-select" v-model="queryParams.roleIds" :options="optionalRoles" />
+            <RoleSelector class="role-select" v-model="queryParams.roleIds" :options="optionalRoles" clearable />
             <span class="label">是否启用</span>
             <EnabledSelector v-model="queryParams.enabledState" />
             <span class="label">关键词</span>
