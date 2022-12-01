@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="logo">{{ title }}</div>
-        <IconButton class="margin-left" :name="sidebarStore.isCollapse ? 's-unfold' : 's-fold'" size="18" @click="sidebarStore.handleCollapse"></IconButton>
+        <Icon class="icon-button margin-left" :name="sidebarStore.isCollapse ? 's-unfold' : 's-fold'" size="18" @click="sidebarStore.handleCollapse" />
         <div class="breadcrumb margin-left">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item class="separator" v-for="(item, index) in breadcrumbs" :key="index">{{ item }}</el-breadcrumb-item>
@@ -9,10 +9,10 @@
         </div>
         <div class="right">
             <el-tooltip effect="dark" content="刷新" placement="bottom">
-                <IconButton :class="{ reloading: keepAliveStore.isReloading }" name="refresh" size="18" @click="keepAliveStore.refresh"></IconButton>
+                <Icon class="icon-button" :class="{ reloading: keepAliveStore.isReloading }" name="refresh" size="18" @click="keepAliveStore.refresh" />
             </el-tooltip>
             <el-tooltip effect="dark" :content="isFullscreen ? '退出全屏' : '全屏'" placement="bottom">
-                <IconButton class="margin-left" :name="isFullscreen ? 'fullscreen-shrink' : 'fullscreen-expand'" size="18" @click="handleScreenfull"></IconButton>
+                <Icon class="icon-button margin-left" :name="isFullscreen ? 'fullscreen-shrink' : 'fullscreen-expand'" size="18" @click="handleScreenfull" />
             </el-tooltip>
 
             <el-dropdown class="margin-left" @command="handleCommand">
