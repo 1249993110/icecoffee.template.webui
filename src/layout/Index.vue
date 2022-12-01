@@ -1,15 +1,15 @@
 <template>
     <el-container class="layout">
         <el-header class="header" height="48px">
-            <Header></Header>
+            <Header />
         </el-header>
         <el-container class="under-header">
             <el-aside class="aside" :width="sidebarWidth">
-                <Sidebar></Sidebar>
+                <Sidebar />
             </el-aside>
             <el-container>
                 <el-main>
-                    <Main></Main>
+                    <Main />
                     <div class="router-view" v-if="keepAliveStore.isRouterAlive">
                         <router-view v-slot="{ Component }">
                             <transition mode="out-in">
@@ -21,7 +21,7 @@
                     </div>
                 </el-main>
                 <el-footer height="48px">
-                    <Footer></Footer>
+                    <Footer />
                 </el-footer>
             </el-container>
         </el-container>
