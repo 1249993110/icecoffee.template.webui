@@ -41,6 +41,7 @@ declare module '@vue/runtime-core' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
     EnabledSelector: typeof import('./src/components/EnabledSelector.vue')['default']
+    FullScreen: typeof import('./src/components/FullScreen.vue')['default']
     Icon: typeof import('./src/components/Icon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
