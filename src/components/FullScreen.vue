@@ -16,7 +16,7 @@ screenfull.on('change', () => {
 
 const handleScreenfull = () => {
     if (!screenfull.isEnabled) {
-        ElMessage.warning('您的浏览器不支出全屏');
+        ElMessage.warning('您的浏览器不支持全屏');
     }
 
     screenfull.toggle();
