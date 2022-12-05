@@ -1,7 +1,9 @@
 <template>
-    <el-tooltip effect="dark" :content="isFullscreen ? '退出全屏' : '全屏'" placement="bottom">
-        <Icon class="icon-button" :name="isFullscreen ? 'fullscreen-shrink' : 'fullscreen-expand'" size="18" @click="handleScreenfull" />
-    </el-tooltip>
+    <span>
+        <el-tooltip effect="dark" :content="isFullscreen ? '退出全屏' : '全屏'" placement="bottom">
+            <Icon class="icon-button" :name="isFullscreen ? 'fullscreen-shrink' : 'fullscreen-expand'" size="18" @click="handleScreenfull" />
+        </el-tooltip>
+    </span>
 </template>
 
 <script setup>
